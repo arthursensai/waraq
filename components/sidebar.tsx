@@ -15,11 +15,11 @@ import Link from "next/link";
 const AppSidebar = async () => {
   const user = await getUserProfile();
   return (
-    <Sidebar>
-      <SidebarHeader>
+    <Sidebar className="p-2">
+      <SidebarHeader className="h-16 flex items-center justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
-            <h1>Waraq</h1>
+            <h1 className="text-lg">Waraq</h1>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
