@@ -6,11 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchPdf } from "@/api/pdf";
 import { pdfDetails } from "@/types/interfaces";
 
-const Page = ({ params }: { params: Promise<{ pdfFileId: string }> }) => {
+const PageContent = ({ params }: { params: Promise<{ pdfFileId: string }> }) => {
   const { pdfFileId } = use(params);
 
   const { isPending, isError, data, error } = useQuery({
-    queryKey: ["pdfs"],
+    queryKey: ["pdfs", pdfFileId],
     queryFn: () => fetchPdf(pdfFileId),
   });
 
@@ -28,6 +28,14 @@ const Page = ({ params }: { params: Promise<{ pdfFileId: string }> }) => {
     <section className="w-full h-screen">
       <PDFSection pdfData={pdfData} />
     </section>
+  );
+};
+
+const Page = ({ params }: { params: Promise<{ pdfFileId: string }> }) => {
+  return (
+    <Suspense fallback={<span>Loading...</span>}>
+      <PageContent params={params} />
+    </Suspense>
   );
 };
 

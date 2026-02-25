@@ -59,7 +59,7 @@ export const getPdfDetails = async ({ supabase, id }: { supabase: SupabaseClient
 
     const { data: pdfDocumentData, error: documentError } = await supabase
         .from("pdf_documents")
-        .select("title, author, description").eq("file_id", id).single();
+        .select("title, author, description, language, type, total_pages, pages_read").eq("file_id", id).single();
 
 
     if (fileError || documentError) {
@@ -73,6 +73,10 @@ export const getPdfDetails = async ({ supabase, id }: { supabase: SupabaseClient
         title: pdfDocumentData.title,
         author: pdfDocumentData.author,
         description: pdfDocumentData.description,
+        language: pdfDocumentData.language,
+        type: pdfDocumentData.type,
+        total_pages: pdfDocumentData.total_pages,
+        pages_read: pdfDocumentData.pages_read
     };
 };
 

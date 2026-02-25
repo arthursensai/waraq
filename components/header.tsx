@@ -1,11 +1,20 @@
 "use client";
 
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { staticTitles } from "@/lib/titles";
-import { SidebarTrigger } from "./ui/sidebar";
-import { useSidebar } from "./ui/sidebar";
+import { SidebarTrigger, useSidebar } from "./ui/sidebar";
 
-const Header = () => {
+const SafeSidebarTrigger = () => {
+  try {
+    useSidebar();
+    return <SidebarTrigger />;
+  } catch (e) {
+    return null;
+  }
+};
+
+const HeaderContent = () => {
   const pathname = usePathname();
 
   const getTitle = (path: string) => {
@@ -25,15 +34,6 @@ const Header = () => {
 
   const title = getTitle(pathname);
 
-  const SafeSidebarTrigger = () => {
-    try {
-      const sidebar = useSidebar();
-      return <SidebarTrigger />;
-    } catch (e) {
-      return null;
-    }
-  };
-
   return (
     <header className="w-full flex items-center gap-4 border-b border-b-foreground/10 h-16">
       <div className="p-2">
@@ -41,6 +41,20 @@ const Header = () => {
       </div>
       <h1 className="font-bold">{title}</h1>
     </header>
+  );
+};
+
+const Header = () => {
+  return (
+    <Suspense
+      fallback={
+        <header className="w-full flex items-center gap-4 border-b border-b-foreground/10 h-16">
+          <div className="p-2" />
+        </header>
+      }
+    >
+      <HeaderContent />
+    </Suspense>
   );
 };
 
