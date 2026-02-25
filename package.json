@@ -6,6 +6,7 @@
     "start": "next start",
     "lint": "eslint ."
   },
+  "type": "module",
   "dependencies": {
     "@embedpdf/core": "2.6.1",
     "@embedpdf/engines": "2.6.1",
