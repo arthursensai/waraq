@@ -3,7 +3,7 @@
 import PDFSection from "@/components/pdf-section";
 import { Suspense, use } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPdf } from "@/api/pdf";
+import { fetchPdf } from "@/src/api/pdf";
 import { pdfDetails } from "@/types/interfaces";
 
 const PageContent = ({ params }: { params: Promise<{ pdfFileId: string }> }) => {

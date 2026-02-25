@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { createPdf } from "@/api/pdf";
+import { createPdf } from "@/src/api/pdf";
 import { createClient } from "@/lib/supabase/client";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";

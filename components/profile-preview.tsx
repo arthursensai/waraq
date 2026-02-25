@@ -5,7 +5,7 @@ import { Skeleton } from "./ui/skeleton";
 import Image from "next/image";
 import { profileSchema } from "@/types/interfaces";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { fetchProfile } from "@/api/profile";
+import { fetchProfile } from "@/src/api/profile";
 
 const ProfilePreview = () => {
   const { isPending, data, error } = useQuery({

@@ -10,7 +10,7 @@ import {
 import { pdfDocumentSchema } from "@/types/interfaces";
 import { Button } from "./ui/button";
 import { Info, Pen, Trash2 } from "lucide-react";
-import { deletePdf } from "@/api/pdf";
+import { deletePdf } from "@/src/api/pdf";
 import { toast } from "sonner";
 import {
   AlertDialog,

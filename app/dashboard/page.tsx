@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchPdfs } from "@/api/pdf";
+import { fetchPdfs } from "@/src/api/pdf";
 import LibraryToolbar from "@/components/library-toolbar";
 import PdfsSection from "@/components/pdfs-section";
 import { Skeleton } from "@/components/ui/skeleton";

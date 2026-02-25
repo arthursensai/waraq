@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchProfile, updateProfile } from "@/api/profile";
+import { fetchProfile, updateProfile } from "@/src/api/profile";
 import {
   Dialog,
   DialogContent,
