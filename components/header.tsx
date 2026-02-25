@@ -1,21 +1,45 @@
-import Link from "next/link";
-import { Suspense } from "react";
-import { EnvVarWarning } from "./env-var-warning";
-import AuthButton from "./auth-button";
+"use client";
+
+import { usePathname } from "next/navigation";
+import { staticTitles } from "@/lib/titles";
+import { SidebarTrigger } from "./ui/sidebar";
+import { useSidebar } from "./ui/sidebar";
 
 const Header = () => {
+  const pathname = usePathname();
+
+  const getTitle = (path: string) => {
+    if (staticTitles[path]) return staticTitles[path];
+
+    const segments = path.split("/").filter(Boolean);
+
+    if (segments[0] === "books") {
+      if (segments.length === 2) return segments[1].replace(/-/g, " ");
+      if (segments.length === 3) return segments[2].replace(/-/g, " ");
+    }
+
+    return segments.length > 0
+      ? segments[segments.length - 1].replace(/-/g, " ")
+      : "Page";
+  };
+
+  const title = getTitle(pathname);
+
+  const SafeSidebarTrigger = () => {
+    try {
+      const sidebar = useSidebar();
+      return <SidebarTrigger />;
+    } catch (e) {
+      return null;
+    }
+  };
+
   return (
-    <header className="w-full flex justify-between border-b border-b-foreground/10 h-16">
-      <h1 className="flex gap-5 items-center font-semibold px-3">
-        <Link href={"/"}>My books</Link>
-      </h1>
-      <nav className="flex justify-center">
-        <div className="w-full max-w-5xl flex justify-between items-center px-5 text-sm">
-          <Suspense>
-            <AuthButton />
-          </Suspense>
-        </div>
-      </nav>
+    <header className="w-full flex items-center gap-4 border-b border-b-foreground/10 h-16">
+      <div className="p-2">
+        <SafeSidebarTrigger />
+      </div>
+      <h1 className="font-bold">{title}</h1>
     </header>
   );
 };

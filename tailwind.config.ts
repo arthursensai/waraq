@@ -69,11 +69,17 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)"],
-        serif: ["var(--font-serif)"],
-        mono: ["var(--font-mono)"],
+        sans: ["Cairo", "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ["ui-serif", "Georgia", "Cambria", "Times New Roman", "serif"],
+        mono: ["ui-monospace", "Menlo", "Monaco", "Consolas", "Courier New", "monospace"],
       },
+
     },
+    safelist: [
+      "ut-ready:bg-primary",
+      "ut-uploading:bg-muted",
+      "ut-uploading:text-muted-foreground",
+    ],
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

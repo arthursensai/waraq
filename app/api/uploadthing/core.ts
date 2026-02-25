@@ -1,7 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createUserClient } from "@/lib/supabase/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
-
+import { uploadPdfFile } from "@/lib/supabase/queries/pdfs";
 
 const f = createUploadthing();
 
@@ -17,14 +17,13 @@ const auth = async (req: Request) => {
 
     if (error || !user) return null;
 
-    return { id: user.id, email: user.email };
+    return { id: user.id, email: user.email, accessToken: token };
 };
 
-
 export const ourFileRouter = {
+
     pdfUploader: f({
         pdf: {
-
             maxFileSize: "8MB",
             maxFileCount: 1,
         },
@@ -32,14 +31,27 @@ export const ourFileRouter = {
         .middleware(async ({ req }) => {
             const user = await auth(req);
 
-            if (!user) throw new UploadThingError("Unauthorized");
+            if (!user || !user.accessToken) throw new UploadThingError("Unauthorized");
 
-            return { userId: user.id };
+            return { userId: user.id, email: user.email, accessToken: user.accessToken };
         })
         .onUploadComplete(async ({ metadata, file }) => {
-            console.log("Upload complete for userId:", metadata.userId);
-            console.log("file url", file.ufsUrl);
-            return { uploadedBy: metadata.userId };
+            try {
+                const supabase = createUserClient(metadata.accessToken);
+                const uploadedPdfFileRes = await uploadPdfFile({
+                    userId: metadata.userId,
+                    supabase,
+                    url: file.ufsUrl,
+                    key: file.key,
+                });
+                await supabase.from("pdf_files").update("")
+                return { fileId: uploadedPdfFileRes.id };
+
+            } catch (err) {
+                console.error("Failed to insert pdf file into Supabase", err);
+                return { error: "Error" };
+            }
+
         }),
 } satisfies FileRouter;
 

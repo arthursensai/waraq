@@ -8,18 +8,27 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getUserProfile } from "@/lib/supabase/queries/users";
 import Link from "next/link";
+import ProfileModal from "./profile-modal";
+import Image from "next/image";
+
 
 const AppSidebar = async () => {
-  const user = await getUserProfile();
   return (
-    <Sidebar className="p-2">
+    <Sidebar className="p-2" >
       <SidebarHeader className="h-16 flex items-center justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
-            <h1 className="text-lg">Waraq</h1>
+            <SidebarMenuButton size="lg">
+              <Image
+                src="/favicons/favicon-32x32.png"
+                width={32}
+                height={32}
+                alt="logo"
+                className="rounded-full shadow-shadow"
+              />
+              <h1 className="text-lg">Waraq</h1>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -29,12 +38,23 @@ const AppSidebar = async () => {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton>
-                <Link href="/dashboard">Dashboard</Link>
+                <Link href="/dashboard" className="w-full">
+                  Dashboard
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton>
-                <Link href="/notes">Notes</Link>
+                <Link href="/dashboard/addNew" className="w-full">
+                  Add new Document
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton>
+                <Link href="/notes" className="w-full">
+                  Notes
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -44,12 +64,8 @@ const AppSidebar = async () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Avatar>
-                <AvatarImage src={user.image} />
-                <AvatarFallback>{user.username[0]}</AvatarFallback>
-              </Avatar>
-              {user.username}
+            <SidebarMenuButton size="lg">
+              <ProfileModal />
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

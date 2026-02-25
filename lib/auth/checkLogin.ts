@@ -11,7 +11,7 @@ const checkLogin = async () => {
         throw new Error("You must be logged in to upload.");
     }
 
-    return user
+    return user;
 };
 
 export default checkLogin;

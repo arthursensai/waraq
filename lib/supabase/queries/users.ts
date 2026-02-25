@@ -1,20 +1,30 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+import { SupabaseClient } from "@supabase/supabase-js";
 
-import { cache } from "react";
-
-export const getUserProfile = cache(async () => {
-
-    const supabase = await createClient();
+export const getUserProfile = async ({ supabase, userId }: { supabase: SupabaseClient, userId: string }) => {
 
     const { data, error } = await supabase
-        .from("users")
-        .select("username, image")
+        .from("profiles")
+        .select("username, image").eq("user_id", userId)
         .single();
 
     if (error || !data) {
-        redirect("/auth/login");
+        throw new Error("Unauthorized");
     }
 
     return data;
-});
+};
+
+export const updateUserProfile = async ({ supabase, userId, username, image }: { supabase: SupabaseClient, userId: string, username: string, image: string }) => {
+
+    const { data, error } = await supabase
+        .from("profiles").update({ username, image }).eq("user_id", userId).select("username, image");
+
+    console.log(error)
+    console.log(data)
+
+    if (error || !data) {
+        throw new Error("Unauthorized");
+    }
+
+    return data;
+};
