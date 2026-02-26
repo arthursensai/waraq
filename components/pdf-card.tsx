@@ -52,42 +52,56 @@ const PdfCard = ({ pdf, refetchBooks }: PdfCardProps) => {
           <Info />
         </Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader className="flex flex-col gap-4">
+      
+      <DialogContent className="max-w-[90vw] sm:max-w-[425px] rounded-lg">
+        <DialogHeader className="text-left"> {/* إزالة التمركز الافتراضي */}
           <DialogTitle
-            dir={`${pdf.language == "ar" ? "rtl" : "ltr"}`}
-            className={`${pdf.language == "ar" ? "self-end" : ""} mt-4`}
+            dir={pdf.language === "ar" ? "rtl" : "ltr"}
+            className={`text-2xl font-bold ${pdf.language === "ar" ? "text-right" : "text-left"} mt-4`}
           >
             {pdf.title}
           </DialogTitle>
+          
           <div
-            dir={`${pdf.language == "ar" ? "rtl" : "ltr"}`}
-            className={`${pdf.language == "ar" ? "self-end" : ""}`}
+            dir={pdf.language === "ar" ? "rtl" : "ltr"}
+            className={`${pdf.language === "ar" ? "text-right" : "text-left"} text-muted-foreground`}
           >
-            <h2>{pdf.author}</h2>
+            <p className="text-lg font-medium">{pdf.author}</p>
           </div>
+
           <DialogDescription
-            dir={`${pdf.language == "ar" ? "rtl" : "ltr"}`}
-            className={`${pdf.language == "ar" ? "text-base text-right" : ""} leading-7`}
+            dir={pdf.language === "ar" ? "rtl" : "ltr"}
+            className={`${pdf.language === "ar" ? "text-base text-right" : "text-left"} leading-relaxed mt-4 bg-accent/30 p-4 rounded-md border border-border/50 max-h-[200px] overflow-y-auto`}
           >
             {pdf.description}
           </DialogDescription>
-          <div className="flex flex-col gap-4">
-            <Label>Your progress:</Label>
-            <Progress
-              value={(pdf.pages_read / pdf.total_pages) * 100}
-              className="w-full"
-            />
-          </div>
         </DialogHeader>
-        <DialogFooter className="flex gap-4 items-center justify-between w-full">
-          <Button variant="outline" size="icon-lg" className="flex-1">
-            <Pen />
+
+        {/* Progress Section */}
+        <div className="py-6 space-y-3">
+          <div className="flex justify-between items-center text-sm font-medium">
+            <Label>Your progress:</Label>
+            <span className="text-primary">
+              {Math.round((pdf.pages_read / pdf.total_pages) * 100)}%
+            </span>
+          </div>
+          <Progress
+            value={(pdf.pages_read / pdf.total_pages) * 100}
+            className="h-2"
+          />
+        </div>
+
+        <DialogFooter className="flex flex-row gap-3 items-center justify-between sm:justify-between w-full mt-4">
+          <Button variant="outline" className="flex-1 gap-2">
+            <Pen size={18} />
+            <span>Edit</span>
           </Button>
+
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button size="icon-lg" variant="destructive" className="flex-1">
-                <Trash2 />
+              <Button variant="destructive" className="flex-1 gap-2">
+                <Trash2 size={18} />
+                <span>Delete</span>
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -95,7 +109,7 @@ const PdfCard = ({ pdf, refetchBooks }: PdfCardProps) => {
                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently delete
-                  your pdf from our servers.
+                  your document from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -112,4 +126,8 @@ const PdfCard = ({ pdf, refetchBooks }: PdfCardProps) => {
   );
 };
 
+
+
 export default PdfCard;
+
+

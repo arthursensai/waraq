@@ -39,7 +39,7 @@ const HeaderContent = () => {
       <div className="p-2">
         <SafeSidebarTrigger />
       </div>
-      <h1 className="font-bold">{title}</h1>
+      <h1 className="font-bold text-lg">{title}</h1>
     </header>
   );
 };

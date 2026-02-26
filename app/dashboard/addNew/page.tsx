@@ -166,7 +166,7 @@ const Page = () => {
       className="w-full min-h-screen flex flex-wrap gap-4"
       onSubmit={handleSubmit}
     >
-      <div className="flex flex-1 min min-w-[200px]">
+      <div className="flex flex-1 min min-w-[250px]">
         <div className="w-full h-full flex flex-col items-center justify-center">
           <Input
             type="file"

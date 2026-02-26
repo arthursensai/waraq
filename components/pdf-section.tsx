@@ -4,18 +4,41 @@ import { pdfDetails } from "@/types/interfaces";
 
 import { createPluginRegistration } from "@embedpdf/core";
 import { EmbedPDF } from "@embedpdf/core/react";
-import { DocumentContent, DocumentManagerPluginPackage } from "@embedpdf/plugin-document-manager/react";
-import { Viewport, ViewportPluginPackage } from "@embedpdf/plugin-viewport/react";
-import { Scroller, ScrollPluginPackage, ScrollStrategy } from "@embedpdf/plugin-scroll/react";
-import { RenderLayer, RenderPluginPackage } from "@embedpdf/plugin-render/react";
-import { ZoomPluginPackage, ZoomMode, useZoomCapability } from "@embedpdf/plugin-zoom/react";
+import {
+  DocumentContent,
+  DocumentManagerPluginPackage,
+} from "@embedpdf/plugin-document-manager/react";
+import {
+  Viewport,
+  ViewportPluginPackage,
+} from "@embedpdf/plugin-viewport/react";
+import {
+  Scroller,
+  ScrollPluginPackage,
+  ScrollStrategy,
+} from "@embedpdf/plugin-scroll/react";
+import {
+  RenderLayer,
+  RenderPluginPackage,
+} from "@embedpdf/plugin-render/react";
+import {
+  ZoomPluginPackage,
+  ZoomMode,
+  useZoomCapability,
+} from "@embedpdf/plugin-zoom/react";
 import { usePdfiumEngine } from "@embedpdf/engines/react";
-import { PdfRuntime } from "./pdf-run-time";
+import { PdfRuntime } from "../hooks/usePdfRunTime";
+import { useScrollToPageOnLoad } from "@/hooks/useScrollToPage";
+import { useEffect } from "react";
+import { useSaveCurrentPage } from "@/hooks/useSaveCurrentPage";
+import apiFetch from "@/src/api/client";
 
 const plugins = [
   createPluginRegistration(DocumentManagerPluginPackage, { maxDocuments: 1 }),
   createPluginRegistration(ViewportPluginPackage),
-  createPluginRegistration(ScrollPluginPackage, { defaultStrategy: ScrollStrategy.Vertical }),
+  createPluginRegistration(ScrollPluginPackage, {
+    defaultStrategy: ScrollStrategy.Vertical,
+  }),
   createPluginRegistration(RenderPluginPackage),
   createPluginRegistration(ZoomPluginPackage, {
     defaultZoomLevel: ZoomMode.FitWidth,
@@ -26,11 +49,28 @@ interface PDFSectionProps {
   pdfData: pdfDetails;
 }
 
-const PDFViewer = ({ activeDocumentId }: { activeDocumentId: string }) => {
+const PDFViewer = ({
+  activeDocumentId,
+  initialPage = 1,
+  onSavePage,
+}: {
+  activeDocumentId: string;
+  initialPage?: number;
+  onSavePage: (page: number) => void;
+}) => {
   const { provides: zoom } = useZoomCapability();
-  
+
+  useScrollToPageOnLoad(activeDocumentId, initialPage);
+
+  const currentPage = useSaveCurrentPage({
+    documentId: activeDocumentId,
+    onSavePage,
+  });
+
   const currentScale = (zoom as any)?.currentZoomLevel ?? 1;
-  const renderScale = currentScale * (typeof window !== "undefined" ? window.devicePixelRatio : 1);
+  const renderScale =
+    currentScale *
+    (typeof window !== "undefined" ? window.devicePixelRatio : 1);
 
   return (
     <DocumentContent documentId={activeDocumentId}>
@@ -41,37 +81,38 @@ const PDFViewer = ({ activeDocumentId }: { activeDocumentId: string }) => {
               Loading document…
             </div>
           )}
-
           {isLoaded && (
-            <Viewport
-              documentId={activeDocumentId}
-              style={{
-                height: "100%",
-                width: "100%",
-                backgroundColor: "#f1f3f5",
-                overflow: "auto",
-              }}
-            >
-              <Scroller
+            <div className="relative h-full w-full">
+              <Viewport
                 documentId={activeDocumentId}
-                renderPage={({ width, height, pageIndex }) => (
-                  <div
-                    style={{
-                      width,
-                      height,
-                      margin: "0 auto",
-                      backgroundColor: "white",
-                    }}
-                  >
-                    <RenderLayer
-                      documentId={activeDocumentId}
-                      pageIndex={pageIndex}
-                      scale={renderScale}
-                    />
-                  </div>
-                )}
-              />
-            </Viewport>
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  backgroundColor: "#f1f3f5",
+                  overflow: "auto",
+                }}
+              >
+                <Scroller
+                  documentId={activeDocumentId}
+                  renderPage={({ width, height, pageIndex }) => (
+                    <div
+                      style={{
+                        width,
+                        height,
+                        margin: "0 auto",
+                        backgroundColor: "white",
+                      }}
+                    >
+                      <RenderLayer
+                        documentId={activeDocumentId}
+                        pageIndex={pageIndex}
+                        scale={renderScale}
+                      />
+                    </div>
+                  )}
+                />
+              </Viewport>
+            </div>
           )}
         </>
       )}
@@ -97,7 +138,18 @@ const PDFSection = ({ pdfData }: PDFSectionProps) => {
             <>
               <PdfRuntime url={url} />
               {activeDocumentId && (
-                <PDFViewer activeDocumentId={activeDocumentId} />
+                <PDFViewer
+                  activeDocumentId={activeDocumentId}
+                  initialPage={pdfData.pages_read}
+                  onSavePage={(page) => {
+                    apiFetch(`/api/pdfs/${pdfData.id}`, {
+                      method: "PATCH",
+                      body: JSON.stringify({
+                        pages_read: page,
+                      }),
+                    });
+                  }}
+                />
               )}
             </>
           )}
