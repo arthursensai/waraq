@@ -1,16 +1,18 @@
 import Header from "@/components/sections/header";
 import Footer from "@/components/sections/footer";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import AppSidebar from "@/components/sections/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import Providers from "@/components/providers"
+import Providers from "@/components/providers";
+import AppSidebar from "@/components/sections/sidebar";
+import { Suspense } from "react";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
-
   return (
     <Providers>
       <SidebarProvider defaultOpen={true} suppressHydrationWarning>
+        <Suspense fallback={null}>
           <AppSidebar />
+        </Suspense>
         <main className="flex flex-col min-h-screen w-full">
           <div className="flex items-center justify-between">
             <Header />

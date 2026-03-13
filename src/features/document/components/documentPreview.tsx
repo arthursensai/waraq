@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { languagesDict, typesDict } from "../constants";
 
-const DocumentPreview = ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = use(params);
+const DocumentPreview = ({ id }: { id: string }) => {
   const { data: document, isLoading, isError } = useFetchDocument(id);
 
   if (isLoading) return <Loader text="Loading Document details" />;
@@ -25,7 +24,6 @@ const DocumentPreview = ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div className="w-full min-h-screen">
       <div className="flex flex-wrap gap-4 items-start">
-
         {/* Sidebar */}
         <div className="w-full sm:w-[200px] flex flex-col gap-3 shrink-0">
           <Button className="w-full flex items-center justify-between" asChild>
@@ -40,7 +38,9 @@ const DocumentPreview = ({ params }: { params: Promise<{ id: string }> }) => {
             <div className="flex flex-col gap-1">
               <p className="field-legend text-[11px]">Progress</p>
               <div className="flex items-baseline justify-between">
-                <span className="text-xl font-medium">{document.read_page}</span>
+                <span className="text-xl font-medium">
+                  {document.read_page}
+                </span>
                 <span className="text-xs text-muted-foreground">
                   / {document.total_pages} pages
                 </span>
@@ -75,7 +75,6 @@ const DocumentPreview = ({ params }: { params: Promise<{ id: string }> }) => {
 
         {/* Main card */}
         <div className="flex flex-1 min-w-[240px] flex-col gap-5 rounded-lg border border-border bg-card p-5">
-
           {/* Header */}
           <div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
@@ -116,7 +115,6 @@ const DocumentPreview = ({ params }: { params: Promise<{ id: string }> }) => {
             </Button>
           </div>
         </div>
-
       </div>
     </div>
   );

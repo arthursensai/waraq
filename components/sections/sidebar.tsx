@@ -17,13 +17,10 @@ import Link from "next/link";
 import ProfileModal from "@/src/features/profile/components/profileModal";
 import Image from "next/image";
 import {
-  Book,
-  BookHeart,
   ChevronDown,
   LayoutDashboard,
   Library,
   NotebookPen,
-  Plus,
   Users,
 } from "lucide-react";
 import {
@@ -32,14 +29,9 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 
-import { usePathname } from "next/navigation";
+import { Suspense } from "react";
+import SidebarNav from "./sidebar-nav";
 
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/documents", label: "Documents", icon: Library },
-  { href: "/dashboard/authors", label: "Authors", icon: Users },
-  { href: "/dashboard/notes", label: "Notes", icon: NotebookPen },
-];
 
 const addNewItems = [
   { href: "/dashboard/documents/new", label: "Document" },
@@ -48,8 +40,6 @@ const addNewItems = [
 ];
 
 const AppSidebar = () => {
-  const pathname = usePathname();
-
   return (
     <Sidebar className="p-2">
       <SidebarHeader className="h-16 flex items-center justify-center">
@@ -78,29 +68,9 @@ const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map(({ href, label, icon: Icon }) => {
-                const isActive =
-                  href === "/dashboard"
-                    ? pathname === "/dashboard"
-                    : pathname.startsWith(href);
-
-                return (
-                  <SidebarMenuItem key={href}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive}
-                      tooltip={label}
-                    >
-                      <Link href={href}>
-                        <Icon className="shrink-0" />
-                        <span>{label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
+            <Suspense fallback={null}>
+              <SidebarNav />
+            </Suspense>
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -119,7 +89,7 @@ const AppSidebar = () => {
                 <SidebarMenu>
                   {addNewItems.map(({ href, label }) => (
                     <SidebarMenuItem key={href}>
-                      <SidebarMenuButton asChild tooltip={`New ${label}`}>
+                      <SidebarMenuButton asChild>
                         <Link href={href} className="flex items-center gap-2">
                           <span className="p-2">{label}</span>
                         </Link>
