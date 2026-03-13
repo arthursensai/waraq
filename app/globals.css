@@ -148,3 +148,9 @@
     font-family: var(--font-sans);
   }
 }
+
+@layer components {
+  .field-legend {
+    @apply font-semibold uppercase tracking-[0.18em] text-muted-foreground;
+  }
+}

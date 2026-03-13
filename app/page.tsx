@@ -1,6 +1,6 @@
-import Hero from "@/components/hero";
-import Footer from "@/components/footer";
-import Header from "@/components/header";
+import Header from "@/components/sections/header";
+import Hero from "@/components/sections/hero";
+import Footer from "@/components/sections/footer";
 import Providers from "@/components/providers";
 import { LightRays } from "@/components/ui/light-rays";
 

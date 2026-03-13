@@ -1,10 +1,21 @@
 import type { NextConfig } from "next";
-import { MAX_SIZE_MB } from "./rules/pdf";
+
+const MAX_SIZE_MB = 50 
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
     proxyClientMaxBodySize: `${MAX_SIZE_MB}mb`,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: `${process.env.UPLOADTHING_ID}.ufs.sh`,
+        port: '',
+        pathname: '/f/**',
+      },
+    ],
   },
 };
 
