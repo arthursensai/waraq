@@ -28,10 +28,15 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { DocumentSchema, DocumentType } from "../documentSchema";
+import { DocumentSchemaType } from "../documentSchema";
 import { useCreateDocument, useFileUpload } from "../documentHook";
 import { useFetchAuthors } from "../../author/authorHook";
-import { languagesDict, typesDict } from "../constants";
+import {
+  ContentLanguage,
+  contentLanguagesDict,
+  ContentType,
+  contentTypesDict,
+} from "../constants";
 import { useStore } from "@tanstack/react-form";
 
 const CreateDocument = () => {
@@ -60,12 +65,12 @@ const CreateDocument = () => {
       title: "",
       description: "",
       author_id: "",
-      language: "en",
-      type: "book",
+      content_language: "en",
+      content_type: "book",
       total_pages: 0,
       read_page: 0,
       tags: [],
-    } satisfies DocumentType,
+    } satisfies DocumentSchemaType,
     onSubmit: async () => {
       mutate({
         id: "",
@@ -75,8 +80,10 @@ const CreateDocument = () => {
         description: form.getFieldValue("description"),
         total_pages: form.getFieldValue("total_pages"),
         read_page: form.getFieldValue("read_page"),
-        language: form.getFieldValue("language"),
-        type: form.getFieldValue("type"),
+        content_language: form.getFieldValue(
+          "content_language",
+        ) as ContentLanguage,
+        content_type: form.getFieldValue("content_type") as ContentType,
       });
     },
   });
@@ -199,7 +206,7 @@ const CreateDocument = () => {
             />
 
             <form.Field
-              name="language"
+              name="content_language"
               children={(field) => (
                 <Field className="flex flex-col gap-4">
                   <FieldLabel>Language:</FieldLabel>
@@ -214,11 +221,13 @@ const CreateDocument = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {Object.entries(languagesDict).map(([key, label]) => (
-                          <SelectItem key={key} value={key}>
-                            {label}
-                          </SelectItem>
-                        ))}
+                        {Object.entries(contentLanguagesDict).map(
+                          ([key, label]) => (
+                            <SelectItem key={key} value={key}>
+                              {label}
+                            </SelectItem>
+                          ),
+                        )}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -227,7 +236,7 @@ const CreateDocument = () => {
             />
 
             <form.Field
-              name="type"
+              name="content_type"
               children={(field) => (
                 <Field className="flex flex-col gap-4">
                   <FieldLabel>Type:</FieldLabel>
@@ -243,11 +252,13 @@ const CreateDocument = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {Object.entries(typesDict).map(([key, label]) => (
-                          <SelectItem key={key} value={key}>
-                            {label}
-                          </SelectItem>
-                        ))}
+                        {Object.entries(contentTypesDict).map(
+                          ([key, label]) => (
+                            <SelectItem key={key} value={key}>
+                              {label}
+                            </SelectItem>
+                          ),
+                        )}
                       </SelectGroup>
                     </SelectContent>
                   </Select>

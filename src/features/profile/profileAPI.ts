@@ -40,7 +40,11 @@ export const updateImage = async (
 
   await supabase
     .from("images")
-    .update({ owner_id: null, owner_type: null })
+    .update({
+      owner_id: null,
+      owner_type: null,
+      nulled_at: new Date().toISOString(),
+    })
     .eq("id", imageId);
 
   const { data, error } = await supabase
@@ -59,9 +63,14 @@ export const updateImage = async (
   return data;
 };
 
-export const updateProfile = async ({ username, profile_id }: { username: string, profile_id: string }) => {
+export const updateProfile = async ({
+  username,
+  profile_id,
+}: {
+  username: string;
+  profile_id: string;
+}) => {
   const supabase = createClient();
-
 
   const { data, error } = await supabase
     .from("profiles")

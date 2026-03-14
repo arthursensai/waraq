@@ -5,8 +5,13 @@ import {
   fetchAuthor,
   fetchAuthors,
   updateAuthor,
+  updateAuthorImage,
 } from "./authorApi";
-import { AuthorSchema } from "./authorSchema";
+import {
+  AuthorSchema,
+  AuthorSchemaType,
+  UpdateAuthorSchemaType,
+} from "./authorSchema";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -31,8 +36,8 @@ export const useCreateAuthor = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ full_name, biography, image_file }: AuthorSchema) => {
-      return createAuthor({ full_name, biography, image_file });
+    mutationFn: async (authorSchema: AuthorSchemaType) => {
+      return createAuthor(authorSchema);
     },
     onMutate: () => {
       toast.loading("Creating your author...", { id: toastId });
@@ -55,8 +60,17 @@ export const useUpdateAuthor = (id: string) => {
   const toastId = "update-author";
 
   return useMutation({
-    mutationFn: async ({ full_name, biography }: AuthorSchema) => {
-      return updateAuthor({ id, full_name, biography });
+    mutationFn: async (updatedAuthorData: UpdateAuthorSchemaType) => {
+      return await Promise.all([
+        updatedAuthorData.image_file
+          ? updateAuthorImage({
+              imageFile: updatedAuthorData.image_file,
+              imageId: updatedAuthorData.image_id,
+              authorId: id,
+            })
+          : null,
+        updateAuthor(updatedAuthorData),
+      ]);
     },
     onMutate: () => {
       toast.loading("Your author data is currently being updated...", {

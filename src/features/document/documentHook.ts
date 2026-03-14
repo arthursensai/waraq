@@ -6,10 +6,8 @@ import {
   uploadFile,
 } from "./documentApi";
 import { toast } from "sonner";
-import { DocumentType } from "./documentSchema";
+import { DocumentSchemaType } from "./documentSchema";
 import { useRouter } from "next/navigation";
-import { useDocumentManagerCapability } from "@embedpdf/plugin-document-manager/react";
-import { useEffect } from "react";
 
 export const useFetchDocuments = () => {
   return useQuery({
@@ -51,7 +49,7 @@ export const useCreateDocument = () => {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: async (document: DocumentType) => {
+    mutationFn: async (document: DocumentSchemaType) => {
       return createDocument(document);
     },
     onMutate: () => {
@@ -66,3 +64,7 @@ export const useCreateDocument = () => {
     },
   });
 };
+
+export const useUpdateDocument = () => {
+  
+}

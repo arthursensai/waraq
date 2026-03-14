@@ -1,11 +1,12 @@
 import AuthorPreview from "@/src/features/author/components/authorPreview";
-import { Suspense } from "react";
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+
   return (
-    <Suspense fallback={null}>
-      <AuthorPreview params={params} />
-    </Suspense>
+    <section className="w-full min-h-svh flex flex-col items-center justify-center">
+      <AuthorPreview id={id} />
+    </section>
   );
 };
 

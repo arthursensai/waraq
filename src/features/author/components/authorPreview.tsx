@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import { useFetchAuthor } from "../authorHook";
 import Image from "next/image";
 import { Loader } from "@/components/ui/loader";
@@ -8,8 +7,7 @@ import UpdateAuthor from "./updateAuthor";
 import DeleteAuthor from "./deleteAuthor";
 import { notFound } from "next/navigation";
 
-const AuthorPreview = ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = use(params);
+const AuthorPreview = ({ id }: { id: string }) => {
   const { data: author, isLoading, isError } = useFetchAuthor(id);
 
   if (isLoading) return <Loader text="Loading Author details" />;
@@ -17,9 +15,8 @@ const AuthorPreview = ({ params }: { params: Promise<{ id: string }> }) => {
   if (isError) return <div>Error loading author</div>;
 
   return (
-    <div className="h-full w-full min-h-screen">
+    <div className="w-full min-h-svh">
       <div className="w-full flex flex-col sm:flex-row gap-4">
-        
         {/* Image */}
         <div className="w-full sm:w-52 sm:h-52 h-64 border-border bg-card shrink-0">
           <div className="relative w-full h-full rounded-lg overflow-hidden">
@@ -55,7 +52,6 @@ const AuthorPreview = ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

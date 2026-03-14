@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { DocumentType } from "./documentSchema";
+import { DocumentSchemaType, DocumentUpdateSchemaType } from "./documentSchema";
 
 export const fetchDocuments = async () => {
   const supabase = createClient();
@@ -61,7 +61,7 @@ export const uploadFile = async (documentFile: File) => {
   }
 };
 
-export const createDocument = async (document: DocumentType) => {
+export const createDocument = async (document: DocumentSchemaType) => {
   const supabase = createClient();
 
   try {
@@ -93,3 +93,9 @@ export const createDocument = async (document: DocumentType) => {
     throw new Error(err.message || "Error creating document");
   }
 };
+
+export const updateDocument = async (updatedDocument: DocumentUpdateSchemaType) => {
+  const { title, description, content_type, content_language } = updatedDocument;
+  const supabase = createClient();
+  const {} = await supabase.from("documents").update({ })
+}

@@ -7,14 +7,19 @@ import Link from "next/link";
 import { useFetchDocument } from "../documentHook";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { languagesDict, typesDict } from "../constants";
+import {
+  ContentLanguage,
+  contentLanguagesDict,
+  ContentType,
+  contentTypesDict,
+} from "../constants";
 
 const DocumentPreview = ({ id }: { id: string }) => {
   const { data: document, isLoading, isError } = useFetchDocument(id);
 
   if (isLoading) return <Loader text="Loading Document details" />;
-  if (isError) return <div>Error loading document</div>;
   if (!document) notFound();
+  if (isError) return <div>Error loading document</div>;
 
   const progressPercent =
     document.total_pages > 0
@@ -58,15 +63,18 @@ const DocumentPreview = ({ id }: { id: string }) => {
 
             <div className="border-t border-border pt-3 flex flex-col gap-3">
               <div className="flex flex-col gap-0.5">
-                <p className="field-legend text-[11px]">Type</p>
+                <p className="field-legend text-[11px]">Content type</p>
                 <span className="text-sm">
-                  {typesDict[document.type] ?? document.type}
+                  {contentTypesDict[document.content_type as ContentType] ??
+                    document.type}
                 </span>
               </div>
               <div className="flex flex-col gap-0.5">
                 <p className="field-legend text-[11px]">Language</p>
                 <span className="text-sm">
-                  {languagesDict[document.language] ?? document.language}
+                  {contentLanguagesDict[
+                    document.content_language as ContentLanguage
+                  ] ?? document.language}
                 </span>
               </div>
             </div>

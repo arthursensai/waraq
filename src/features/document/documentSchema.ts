@@ -1,4 +1,10 @@
 import { z } from "zod";
+import {
+  ContentLanguage,
+  contentLanguagesDict,
+  ContentType,
+  contentTypesDict,
+} from "./constants";
 
 export const DocumentSchema = z.object({
   id: z.uuid(),
@@ -15,14 +21,17 @@ export const DocumentSchema = z.object({
     .min(12, "Description must be at least 12 characters.")
     .max(500, "Description must be at most 500 characters."),
 
-  language: z.enum(["en", "ar", "de"], "Language must be 'en', 'ar', or 'de'"),
-
-  type: z.enum(
-    ["book", "novel", "document"],
-    "Type must be 'book', 'novel', or 'document'",
+  content_language: z.enum(
+    Object.keys(contentLanguagesDict) as [
+      ContentLanguage,
+      ...ContentLanguage[],
+    ],
+  ),
+  content_type: z.enum(
+    Object.keys(contentTypesDict) as [ContentType, ...ContentType[]],
   ),
 
-  tags: z.array(z.string("tags are required")).default([]).optional(),
+  tags: z.array(z.string()).default([]).optional(),
 
   total_pages: z
     .number("Total pages must be a number")
@@ -33,4 +42,7 @@ export const DocumentSchema = z.object({
     .min(0, "Pages read cannot be negative"),
 });
 
-export type DocumentType = z.infer<typeof DocumentSchema>;
+export const DocumentUpdateSchema = DocumentSchema.partial();
+
+export type DocumentSchemaType = z.infer<typeof DocumentSchema>;
+export type DocumentUpdateSchemaType = z.infer<typeof DocumentUpdateSchema>;

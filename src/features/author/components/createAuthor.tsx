@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ImagePicker } from "@/components/ui/image-picker";
 import { Textarea } from "@/components/ui/textarea";
-import { RotateCcw, RotateCwSquareIcon } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 
 const CreateAuthor = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -33,6 +33,8 @@ const CreateAuthor = () => {
     },
     onSubmit: async () => {
       mutate({
+        id: "",
+        image_id: "",
         full_name: form.getFieldValue("full_name"),
         biography: form.getFieldValue("biography"),
         image_file: imageFile,

@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import ErrorContent from "@/src/features/auth/components/ErrorContent";
+import ErrorContent from "@/src/features/auth/components/errorContent";
 import Link from "next/link";
 import { Suspense } from "react";
 

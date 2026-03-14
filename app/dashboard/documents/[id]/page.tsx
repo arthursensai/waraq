@@ -4,7 +4,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
   return (
-    <section className="w-full min-h-screen">
+    <section className="w-full min-h-svh">
       <DocumentPreview id={id} />
     </section>
   );
