@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
 const defaultUrl = process.env.VERCEL_URL

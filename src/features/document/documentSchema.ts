@@ -1,6 +1,6 @@
-import * as z from "zod";
+import { z } from "zod";
 
-export const Document = z.object({
+export const DocumentSchema = z.object({
   id: z.uuid(),
   title: z
     .string("Title is required")
@@ -33,4 +33,4 @@ export const Document = z.object({
     .min(0, "Pages read cannot be negative"),
 });
 
-export type DocumentType = z.infer<typeof Document>;
+export type DocumentType = z.infer<typeof DocumentSchema>;

@@ -3,7 +3,6 @@
 import { use } from "react";
 import { useFetchAuthor } from "../authorHook";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/ui/loader";
 import UpdateAuthor from "./updateAuthor";
 import DeleteAuthor from "./deleteAuthor";
@@ -15,14 +14,15 @@ const AuthorPreview = ({ params }: { params: Promise<{ id: string }> }) => {
 
   if (isLoading) return <Loader text="Loading Author details" />;
   if (!author) notFound();
-
   if (isError) return <div>Error loading author</div>;
 
   return (
     <div className="h-full w-full min-h-screen">
-      <div className="w-full flex gap-4">
-        <div className="flex w-52 h-52 border-border bg-card">
-          <div className="relative flex-1 rounded-lg overflow-hidden">
+      <div className="w-full flex flex-col sm:flex-row gap-4">
+        
+        {/* Image */}
+        <div className="w-full sm:w-52 sm:h-52 h-64 border-border bg-card shrink-0">
+          <div className="relative w-full h-full rounded-lg overflow-hidden">
             <Image
               src={author.image_url}
               alt={author.full_name}
@@ -32,8 +32,9 @@ const AuthorPreview = ({ params }: { params: Promise<{ id: string }> }) => {
           </div>
         </div>
 
+        {/* Details */}
         <div className="flex flex-1 gap-4 flex-col bg-card rounded-lg p-4">
-          <div className="flex gap-4 flex-col ">
+          <div className="flex gap-4 flex-col">
             <div>
               <h2 className="field-legend text-[14px]">Full Name:</h2>
               <p>{author.full_name}</p>
@@ -43,7 +44,9 @@ const AuthorPreview = ({ params }: { params: Promise<{ id: string }> }) => {
               <p>{author.biography}</p>
             </div>
           </div>
-          <div className="w-full flex gap-4">
+
+          {/* Actions */}
+          <div className="w-full flex flex-col sm:flex-row gap-4 mt-auto">
             <div className="flex-1">
               <UpdateAuthor author={author} />
             </div>
@@ -52,6 +55,7 @@ const AuthorPreview = ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

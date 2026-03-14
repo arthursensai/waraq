@@ -29,7 +29,7 @@ const Hero = () => {
       <div className="flex flex-col space-y-6 text-center gap-4">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl mx-auto ">
           The best platform to keep track of your{" "}
-          <span className="text-primary">PDFs</span> everywhere!
+          <span className="text-primary">Documents</span> everywhere!
         </h1>
         <div className="flex justify-center">
           <Button size="lg" asChild>

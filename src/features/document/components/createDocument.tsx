@@ -28,7 +28,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { Document, DocumentType } from "../documentSchema";
+import { DocumentSchema, DocumentType } from "../documentSchema";
 import { useCreateDocument, useFileUpload } from "../documentHook";
 import { useFetchAuthors } from "../../author/authorHook";
 import { languagesDict, typesDict } from "../constants";

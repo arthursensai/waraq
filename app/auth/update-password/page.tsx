@@ -1,11 +1,13 @@
-import { UpdatePasswordForm } from "@/components/forms/update-password-form";
+import UpdatePasswordForm from "@/src/features/auth/components/updatePassword";
 
-export default function Page() {
+const Page = () => {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+    <section className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
         <UpdatePasswordForm />
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default Page;
