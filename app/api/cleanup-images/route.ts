@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import utapi from "@/lib/uploadThing";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
   const secret = req.headers.get("x-api-secret");
@@ -45,9 +43,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  });
+
   // Send notification email
-  await resend.emails.send({
-    from: "Waraq Cleanup <onboarding@resend.dev>",
+  await transporter.sendMail({
+    from: `"Waraq Cleanup" <${process.env.GMAIL_USER}>`,
     to: process.env.CLEANUP_NOTIFICATION_EMAIL!,
     subject: `🗑️ Cleanup Report — ${orphanedImages.length} image(s) deleted`,
     html: `
