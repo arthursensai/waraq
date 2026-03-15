@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,6 +24,7 @@ import { ProfileSchema } from "../profileSchema";
 import { useFetchProfile, useUpdateProfile } from "../profileHook";
 import { ImagePicker } from "@/components/ui/image-picker";
 import { Skeleton } from "@/components/ui/skeleton";
+import LogoutButton from "../../auth/components/logoutDialog";
 
 const ProfileModal = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -109,7 +111,8 @@ const ProfileModal = () => {
           onSubmit={(e) => {
             e.preventDefault();
             form.handleSubmit();
-          }}>
+          }}
+        >
           <FieldGroup>
             <form.Field
               name="image_file"
@@ -147,6 +150,9 @@ const ProfileModal = () => {
 
           <Button type="submit">Update profile</Button>
         </form>
+        <DialogFooter>
+          <LogoutButton />
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

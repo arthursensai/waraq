@@ -1,6 +1,71 @@
 import { createClient } from "@/lib/supabase/client";
 import { uploadFiles } from "@/lib/uploadThing/image-router";
 
+export const uploadProfileImage = async ({
+  imageFile,
+  ownerId,
+}: {
+  imageFile: File;
+  ownerId: string;
+}) => {
+  const supabase = createClient();
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const token = session?.access_token;
+  if (!token) throw new Error("No user session found");
+
+  const res = await uploadFiles("imageUploader", {
+    files: [imageFile],
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res[0]) throw new Error("Upload failed");
+
+  const fileData = res[0];
+
+  const { data, error } = await supabase
+    .from("images")
+    .insert({
+      key: fileData.key,
+      url: fileData.ufsUrl,
+      owner_id: ownerId,
+      owner_type: "profile",
+    })
+    .select()
+    .single();
+
+  if (error) throw new Error("Error adding profile image");
+
+  return data;
+};
+
+export const handleOnBoarding = async ({
+  username,
+  imageFile,
+}: {
+  username: string;
+  imageFile: File;
+}) => {
+  const supabase = createClient();
+
+  const user_id = (await supabase.auth.getUser()).data.user?.id;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ username })
+    .eq("user_id", user_id)
+    .select()
+    .single();
+
+  if (error) throw new Error("Error creating profile");
+
+  await uploadProfileImage({ imageFile, ownerId: data.id });
+
+  return data;
+};
+
 export const fetchProfile = async () => {
   const supabase = createClient();
 

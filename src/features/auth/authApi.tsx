@@ -11,7 +11,10 @@ export const handleSignUp = async ({ email, password }: SignUpSchemaType) => {
     },
   });
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
 
   return data;
 };
@@ -41,8 +44,19 @@ export const handleUpdatePassword = async (password: string) => {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.updateUser({ password });
-  
+
   if (error) throw new Error(error.message);
 
   return data;
+};
+
+export const handleLogout = async () => {
+  const supabase = createClient();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error("Error logging you out");
+  }
+
+  return true;
 };

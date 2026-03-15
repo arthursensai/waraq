@@ -123,7 +123,7 @@ const SignUpForm = () => {
                     <Input
                       name={field.name}
                       value={field.state.value}
-                      type={field.name}
+                      type="password"
                       required
                       onChange={(e) =>
                         field.handleChange(e.currentTarget.value)

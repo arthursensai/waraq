@@ -3,6 +3,7 @@ import { LoginSchemaType, SignUpSchemaType } from "./authSchema";
 import {
   handleForgotPassword,
   handleLogin,
+  handleLogout,
   handleSignUp,
   handleUpdatePassword,
 } from "./authApi";
@@ -15,7 +16,7 @@ export const useSignUp = () => {
       return handleSignUp(signUpCredentials);
     },
     onSuccess: () => {
-      router.push("/auth/sign-up-success");
+      router.push("/onBoarding");
     },
   });
 };
@@ -48,6 +49,19 @@ export const useUpdatePassword = () => {
     },
     onSuccess: () => {
       router.push("/auth/sign-up-success");
+    },
+  });
+};
+
+export const useLogout = () => {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: handleLogout,
+    onError: () => {
+      console.log("error logging you out");
+    },
+    onSuccess: () => {
+      router.push("/auth/login");
     },
   });
 };
