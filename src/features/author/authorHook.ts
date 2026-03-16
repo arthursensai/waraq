@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createAuthor,
   deleteAuthor,
+  fetchAllAuthors,
   fetchAuthor,
   fetchAuthors,
   updateAuthor,
@@ -14,19 +15,35 @@ import {
 } from "./authorSchema";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { AvalaiblityType } from "@/lib/constants/types";
 
-export const useFetchAuthors = () => {
+export const useFetchAllAuthors = () => {
   return useQuery({
-    queryKey: ["authors"],
-    queryFn: fetchAuthors,
+    queryKey: [`all-authors`],
+    queryFn: fetchAllAuthors
   });
 };
 
-export const useFetchAuthor = (id: string) => {
+export const useFetchAuthors = (type: AvalaiblityType) => {
+  return useQuery({
+    queryKey: [`${type}-authors`],
+    queryFn: () => {
+      return fetchAuthors({ type });
+    },
+  });
+};
+
+export const useFetchAuthor = ({
+  id,
+  type,
+}: {
+  id: string;
+  type: AvalaiblityType;
+}) => {
   return useQuery({
     queryKey: ["author", id],
     queryFn: () => {
-      return fetchAuthor(id);
+      return fetchAuthor({ id, type });
     },
   });
 };

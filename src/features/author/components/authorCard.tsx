@@ -2,22 +2,24 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { AvalaiblityType } from "@/lib/constants/types";
 
 interface AuthorPreviewProps {
   author: {
+    id: string;
     full_name: string;
     image_url: string;
     biography: string;
-    id: string;
   };
+  type: AvalaiblityType;
 }
 
-const AuthorCard = ({ author }: AuthorPreviewProps) => {
+const AuthorCard = ({ author, type }: AuthorPreviewProps) => {
   const { full_name, image_url, biography, id } = author;
 
   return (
     <Link
-      href={`/dashboard/authors/${id}`}
+      href={`/dashboard/authors/${type}/${id}`}
       className="group aspect-[3/4] w-full flex flex-col border border-border hover:border-border/80 transition-all duration-300 rounded-xl overflow-hidden cursor-pointer bg-card"
     >
       {/* Image area */}

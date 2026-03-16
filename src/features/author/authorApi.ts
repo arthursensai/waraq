@@ -1,21 +1,41 @@
 import { createClient } from "@/lib/supabase/client";
 import { uploadFiles } from "@/lib/uploadThing/image-router";
 import { AuthorSchemaType } from "./authorSchema";
+import { AvalaiblityType } from "@/lib/constants/types";
 
-export const fetchAuthors = async () => {
+export const fetchAllAuthors = async () => {
   const supabase = createClient();
-  const { data, error } = await supabase.from("author_with_image").select("*");
 
-  if (error) throw new Error("Error fetching user's authors ");
+  const { data, error } = await supabase.from("authors").select("id, full_name");
+
+  if (error) throw new Error("Error fetching All authors");
 
   return data;
 };
 
-export const fetchAuthor = async (id: string) => {
+export const fetchAuthors = async ({ type }: { type: AvalaiblityType }) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from(`${type}_authors_view`)
+    .select("*")
+    .limit(5);
+
+  if (error) throw new Error("Error fetching authors ");
+
+  return data;
+};
+
+export const fetchAuthor = async ({
+  id,
+  type,
+}: {
+  id: string;
+  type: AvalaiblityType;
+}) => {
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from("author_with_image")
+    .from(`${type}_authors_view`)
     .select("*")
     .eq("id", id)
     .single();

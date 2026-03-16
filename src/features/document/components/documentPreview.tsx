@@ -27,7 +27,7 @@ const DocumentPreview = ({ id }: { id: string }) => {
       : 0;
 
   return (
-    <div className="w-full min-h-screen">
+    <div className="w-full h-full">
       <div className="flex flex-wrap gap-4 items-start">
         {/* Sidebar */}
         <div className="w-full sm:w-[200px] flex flex-col gap-3 shrink-0">

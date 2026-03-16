@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/input-group";
 import { DocumentSchemaType } from "../documentSchema";
 import { useCreateDocument, useFileUpload } from "../documentHook";
-import { useFetchAuthors } from "../../author/authorHook";
+import { useFetchAllAuthors, useFetchAuthors } from "../../author/authorHook";
 import {
   ContentLanguage,
   contentLanguagesDict,
@@ -38,14 +38,17 @@ import {
   contentTypesDict,
 } from "../constants";
 import { useStore } from "@tanstack/react-form";
+import Image from "next/image";
 
 const CreateDocument = () => {
   const [file, setFile] = useState<File | null>(null);
-  const { data: authors } = useFetchAuthors();
+  const { data: authors } = useFetchAllAuthors();
 
   const [fileData, setFileData] = useState<{
     fileId: string;
     totalPages: number;
+    coverId: string;
+    coverUrl: string;
   } | null>(null);
 
   const {
@@ -72,19 +75,24 @@ const CreateDocument = () => {
       tags: [],
     } satisfies DocumentSchemaType,
     onSubmit: async () => {
-      mutate({
-        id: "",
-        file_id: form.getFieldValue("file_id"),
-        title: form.getFieldValue("title"),
-        author_id: form.getFieldValue("author_id"),
-        description: form.getFieldValue("description"),
-        total_pages: form.getFieldValue("total_pages"),
-        read_page: form.getFieldValue("read_page"),
-        content_language: form.getFieldValue(
-          "content_language",
-        ) as ContentLanguage,
-        content_type: form.getFieldValue("content_type") as ContentType,
-      });
+      if (fileData?.coverId) {
+        mutate({
+          document: {
+            id: "",
+            file_id: form.getFieldValue("file_id"),
+            title: form.getFieldValue("title"),
+            author_id: form.getFieldValue("author_id"),
+            description: form.getFieldValue("description"),
+            total_pages: form.getFieldValue("total_pages"),
+            read_page: form.getFieldValue("read_page"),
+            content_language: form.getFieldValue(
+              "content_language",
+            ) as ContentLanguage,
+            content_type: form.getFieldValue("content_type") as ContentType,
+          },
+          imageId: fileData?.coverId,
+        });
+      }
     },
   });
 
@@ -117,26 +125,29 @@ const CreateDocument = () => {
     >
       <div className="flex flex-1 min min-w-[250px]">
         <div className="w-full h-full flex flex-col items-center justify-center">
-          <Input
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            className="peer hidden"
-            id="file-upload"
-            disabled={isFileUploadSuccess}
-          />
-          <Label
-            htmlFor="file-upload"
-            className="flex flex-col p-4 items-center justify-center gap-3 w-full h-full border-2 border-border rounded-lg cursor-pointer bg-card peer-focus:border-blue-500 hover:bg-accent transition"
-          >
-            {isIdle && <Upload size={72} className="text-primary" />}
-            {isFileUploading && <Spinner className="size-24" />}
-            {isFileUploadSuccess && (
-              <Check size={72} className="text-primary" />
-            )}
-            Drop your File here
-            <p className="text-foreground/30 text-xs">PDF up to 50MB</p>
-          </Label>
+          {isFileUploadSuccess && fileData?.coverUrl ? (
+            <Image src={fileData?.coverUrl} alt="document cover" fill />
+          ) : (
+            <>
+              <Input
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                className="peer hidden"
+                id="file-upload"
+                disabled={isFileUploadSuccess}
+              />
+              <Label
+                htmlFor="file-upload"
+                className="flex flex-col p-4 items-center justify-center gap-3 w-full h-full border-2 border-border rounded-lg cursor-pointer bg-card peer-focus:border-blue-500 hover:bg-accent transition"
+              >
+                {isIdle && <Upload size={72} className="text-primary" />}
+                {isFileUploading && <Spinner className="size-24" />}
+                Drop your File here
+                <p className="text-foreground/30 text-xs">PDF up to 50MB</p>
+              </Label>
+            </>
+          )}
         </div>
       </div>
       <div className="flex-1 flex flex-col border-2 border-border bg-background rounded-md p-4 gap-4">

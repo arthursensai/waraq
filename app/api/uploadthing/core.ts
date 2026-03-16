@@ -1,5 +1,4 @@
 import { createClient, createUserClient } from "@/lib/supabase/server";
-import { PDFDocument } from "pdf-lib";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 

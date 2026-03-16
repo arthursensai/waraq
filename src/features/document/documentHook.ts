@@ -32,7 +32,7 @@ export const useFileUpload = () => {
       return uploadFile(fileDocument);
     },
     onMutate: () => {
-      toast.loading("uploading your file...", { id: toastId });
+      toast.loading("Uploading your file...", { id: toastId });
     },
     onError: () => {
       toast.error("Error uploading your file", { id: toastId });
@@ -49,8 +49,14 @@ export const useCreateDocument = () => {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: async (document: DocumentSchemaType) => {
-      return createDocument(document);
+    mutationFn: async ({
+      document,
+      imageId,
+    }: {
+      document: DocumentSchemaType;
+      imageId: string;
+    }) => {
+      return createDocument({ document, imageId });
     },
     onMutate: () => {
       toast.loading("Creating your document...", { id: toastId });
@@ -65,6 +71,4 @@ export const useCreateDocument = () => {
   });
 };
 
-export const useUpdateDocument = () => {
-  
-}
+export const useUpdateDocument = () => {};

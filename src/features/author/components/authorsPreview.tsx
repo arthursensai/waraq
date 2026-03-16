@@ -1,15 +1,15 @@
 "use client";
 
-import { Spinner } from "@/components/ui/spinner";
 import { useFetchAuthors } from "../authorHook";
 import AuthorCard from "./authorCard";
 import { Users } from "lucide-react";
 import { Loader } from "@/components/ui/loader";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { AvalaiblityType } from "@/lib/constants/types";
 
-const AuthorsPreview = () => {
-  const { data: authors, isLoading, isError } = useFetchAuthors();
+const AuthorsPreview = ({ type }: { type: AvalaiblityType }) => {
+  const { data: authors, isLoading, isError } = useFetchAuthors(type);
 
   if (isLoading) {
     return (
@@ -43,11 +43,16 @@ const AuthorsPreview = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full h-full content-start">
-      {authors.map((author) => (
-        <AuthorCard key={author.id} author={author} />
-      ))}
-    </div>
+    <section className="w-full h-full flex gap-4 flex-col">
+      <h3 className="field-legend">
+        {type == "private" ? "Your authors" : "Public authors"}
+      </h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 content-start">
+        {authors.map((author) => (
+          <AuthorCard key={author.id} author={author} type={type} />
+        ))}
+      </div>
+    </section>
   );
 };
 

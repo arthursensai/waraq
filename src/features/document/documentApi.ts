@@ -15,7 +15,8 @@ export const fetchDocument = async (id: string) => {
   const { data, error } = await supabase
     .from("documents_view")
     .select("*")
-    .eq("id", id).single();
+    .eq("id", id)
+    .single();
 
   if (error) throw new Error("Error fetching documents");
 
@@ -61,7 +62,13 @@ export const uploadFile = async (documentFile: File) => {
   }
 };
 
-export const createDocument = async (document: DocumentSchemaType) => {
+export const createDocument = async ({
+  document,
+  imageId,
+}: {
+  document: DocumentSchemaType;
+  imageId: string;
+}) => {
   const supabase = createClient();
 
   try {
@@ -81,9 +88,20 @@ export const createDocument = async (document: DocumentSchemaType) => {
       .update({ status: "completed" })
       .eq("id", document.file_id);
 
+    const { error: updateCoverError } = await supabase
+      .from("images")
+      .update({ owner_id: documentData.id, owner_type: "document" })
+      .eq("id", imageId);
+
     if (updateError) {
       console.warn(
         `Document created but failed to update file status for file_id=${document.file_id}`,
+      );
+    }
+
+    if (updateCoverError) {
+      console.warn(
+        `Document created but failed to update cover status for image_id=${imageId}`,
       );
     }
 
@@ -94,8 +112,11 @@ export const createDocument = async (document: DocumentSchemaType) => {
   }
 };
 
-export const updateDocument = async (updatedDocument: DocumentUpdateSchemaType) => {
-  const { title, description, content_type, content_language } = updatedDocument;
+export const updateDocument = async (
+  updatedDocument: DocumentUpdateSchemaType,
+) => {
+  const { title, description, content_type, content_language } =
+    updatedDocument;
   const supabase = createClient();
-  const {} = await supabase.from("documents").update({ })
-}
+  const {} = await supabase.from("documents").update({});
+};

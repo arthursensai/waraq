@@ -27,6 +27,11 @@ export function usePageTitle() {
       if (staticTitles[dynamicPath]) return staticTitles[dynamicPath];
     }
 
+    if (segments.length === 4) {
+      const dynamicPath = `/${segments[0]}/${segments[1]}/:type/:id`;
+      if (staticTitles[dynamicPath]) return staticTitles[dynamicPath];
+    }
+
     if (segments.length > 0) {
       return segments[segments.length - 1].replace(/-/g, " ");
     }

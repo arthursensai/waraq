@@ -6,13 +6,14 @@ import { Loader } from "@/components/ui/loader";
 import UpdateAuthor from "./updateAuthor";
 import DeleteAuthor from "./deleteAuthor";
 import { notFound } from "next/navigation";
+import { AvalaiblityType } from "@/lib/constants/types";
 
-const AuthorPreview = ({ id }: { id: string }) => {
-  const { data: author, isLoading, isError } = useFetchAuthor(id);
+const AuthorPreview = ({ id, type }: { id: string; type: AvalaiblityType }) => {
+  const { data: author, isLoading, isError } = useFetchAuthor({ id, type });
 
   if (isLoading) return <Loader text="Loading Author details" />;
-  if (!author) notFound();
   if (isError) return <div>Error loading author</div>;
+  if (!author) return <div>No Avalaile Author </div>;
 
   return (
     <div className="w-full min-h-svh">
@@ -43,14 +44,16 @@ const AuthorPreview = ({ id }: { id: string }) => {
           </div>
 
           {/* Actions */}
-          <div className="w-full flex flex-col sm:flex-row gap-4 mt-auto">
-            <div className="flex-1">
-              <UpdateAuthor author={author} />
+          {type == "private" ? (
+            <div className="w-full flex flex-col sm:flex-row gap-4 mt-auto">
+              <div className="flex-1">
+                <UpdateAuthor author={author} />
+              </div>
+              <div className="flex-1">
+                <DeleteAuthor author={author} />
+              </div>
             </div>
-            <div className="flex-1">
-              <DeleteAuthor author={author} />
-            </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </div>

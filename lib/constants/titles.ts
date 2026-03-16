@@ -8,7 +8,7 @@ export const staticTitles: Record<string, string> = {
 
   "/dashboard/authors": "Authors",
   "/dashboard/authors/new": "Add an Author",
-  "/dashboard/authors/:id": "Author Details",
+  "/dashboard/authors/:type/:id": "Author Details",
 
   "/dashboard/notes": "Notes",
   "/dashboard/notes/new": "Write a Note",

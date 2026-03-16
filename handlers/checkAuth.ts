@@ -2,12 +2,12 @@ import { createClient } from "@/lib/supabase/server";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
-type AuthHandler<T> = (
-  req: NextRequest,
-  supabase: SupabaseClient,
-  user: User,
-  context: T,
-) => Promise<NextResponse>;
+type AuthHandler<T> = ({req, supabase, user, context}: {
+  req: NextRequest;
+  supabase: SupabaseClient;
+  user: User;
+  context: T;
+}) => Promise<NextResponse>;
 
 export const checkAuth = <T>(handler: AuthHandler<T>) => {
   return async (req: NextRequest, context: T) => {
@@ -24,6 +24,6 @@ export const checkAuth = <T>(handler: AuthHandler<T>) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    return handler(req, supabase, data.user, context);
+    return handler({ req, supabase, user: data.user, context });
   };
 };
