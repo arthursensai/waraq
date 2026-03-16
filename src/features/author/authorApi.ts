@@ -6,7 +6,9 @@ import { AvalaiblityType } from "@/lib/constants/types";
 export const fetchAllAuthors = async () => {
   const supabase = createClient();
 
-  const { data, error } = await supabase.from("authors").select("id, full_name");
+  const { data, error } = await supabase
+    .from("authors")
+    .select("id, full_name");
 
   if (error) throw new Error("Error fetching All authors");
 
@@ -54,7 +56,7 @@ export const createAuthor = async ({
 
   const { data, error } = await supabase
     .from("authors")
-    .insert({ full_name, biography })
+    .insert({ full_name, biography, type: "private" })
     .select()
     .single();
 
