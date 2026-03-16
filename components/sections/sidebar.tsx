@@ -41,7 +41,7 @@ const addNewItems = [
 
 const AppSidebar = () => {
   return (
-    <Sidebar className="p-2">
+    <Sidebar className="p-2" >
       <SidebarHeader className="h-16 flex items-center justify-center">
         <SidebarMenu>
           <SidebarMenuItem>

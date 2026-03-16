@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Loader } from "@/components/ui/loader";
 import UpdateAuthor from "./updateAuthor";
 import DeleteAuthor from "./deleteAuthor";
-import { notFound } from "next/navigation";
 import { AvalaiblityType } from "@/lib/constants/types";
 
 const AuthorPreview = ({ id, type }: { id: string; type: AvalaiblityType }) => {

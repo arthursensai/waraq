@@ -8,8 +8,6 @@ const Page = async ({
 }) => {
   const { id, type } = await params;
 
-  console.log(id, type)
-
   return (
     <section className="w-full min-h-svh flex flex-col items-center justify-center">
       <AuthorPreview id={id} type={type} />

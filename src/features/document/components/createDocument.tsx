@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/input-group";
 import { DocumentSchemaType } from "../documentSchema";
 import { useCreateDocument, useFileUpload } from "../documentHook";
-import { useFetchAllAuthors, useFetchAuthors } from "../../author/authorHook";
+import { useFetchAllAuthors } from "../../author/authorHook";
 import {
   ContentLanguage,
   contentLanguagesDict,

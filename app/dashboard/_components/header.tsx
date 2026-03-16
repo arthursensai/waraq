@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { staticTitles } from "@/lib/constants/titles";
-import { SidebarTrigger, useSidebar } from "../ui/sidebar";
+import { SidebarTrigger, useSidebar } from "../../../components/ui/sidebar";
 
 const SafeSidebarTrigger = () => {
   try {
@@ -50,7 +50,7 @@ const HeaderContent = () => {
       <div className="p-2">
         <SafeSidebarTrigger />
       </div>
-      <h1 className="font-bold text-lg">{title}</h1>
+      <h1 className={`font-bold text-lg ${title == "Waraq" ? "text-2xl text-primary" : ""}`}>{title}</h1>
     </header>
   );
 };

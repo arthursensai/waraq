@@ -89,7 +89,7 @@ const ProfileModal = () => {
       }}
     >
       <DialogTrigger asChild>
-        <div className="w-full h-full flex items-center gap-2">
+        <div className="w-full h-full flex items-center gap-2 hover:cursor-pointer">
           <Avatar>
             <AvatarImage src={profile?.image} />
             <AvatarFallback>{profile?.username[0]}</AvatarFallback>
