@@ -9,7 +9,7 @@ const HeaderActions = async () => {
   return (
     <div className="w-fit flex items-center justify-center gap-6">
       {user ? (
-        <Button asChild>
+        <Button asChild variant="outline">
           <Link href="/dashboard">Go to dashboard</Link>
         </Button>
       ) : (

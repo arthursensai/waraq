@@ -47,13 +47,15 @@ const Hero = () => {
         }}
       />
 
-      {/* Ambient glow */}
+      {/* Ambient glow — replace the existing one */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-60 right-0 h-175 w-175 rounded-full"
+        className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "radial-gradient(circle, oklch(from var(--primary) l c h / 0.12) 0%, transparent 70%)",
+          background: `
+      radial-gradient(ellipse 55% 60% at 78% 48%, oklch(from var(--primary) l c h / 0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 35% 40% at 72% 52%, oklch(from var(--primary) l c h / 0.10) 0%, transparent 55%)
+    `,
         }}
       />
 
