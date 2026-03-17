@@ -130,7 +130,7 @@ const CreateAuthor = () => {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    className="w-full flex-1 resize-none min-h-[180px]"
+                    className="w-full flex-1 resize-none min-h-45"
                     aria-invalid={
                       field.state.meta.isTouched &&
                       field.state.meta.errors.length > 0

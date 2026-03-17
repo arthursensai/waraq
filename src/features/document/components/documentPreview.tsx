@@ -18,8 +18,8 @@ const DocumentPreview = ({ id }: { id: string }) => {
   const { data: document, isLoading, isError } = useFetchDocument(id);
 
   if (isLoading) return <Loader text="Loading Document details" />;
-  if (!document) notFound();
   if (isError) return <div>Error loading document</div>;
+  if (!document) notFound();
 
   const progressPercent =
     document.total_pages > 0
@@ -30,7 +30,7 @@ const DocumentPreview = ({ id }: { id: string }) => {
     <div className="w-full h-full">
       <div className="flex flex-wrap gap-4 items-start">
         {/* Sidebar */}
-        <div className="w-full sm:w-[200px] flex flex-col gap-3 shrink-0">
+        <div className="w-full sm:w-50 flex flex-col gap-3 shrink-0">
           <Button className="w-full flex items-center justify-between" asChild>
             <Link href={`/dashboard/documents/${id}/read`}>
               Read now
@@ -82,7 +82,7 @@ const DocumentPreview = ({ id }: { id: string }) => {
         </div>
 
         {/* Main card */}
-        <div className="flex flex-1 min-w-[240px] flex-col gap-5 rounded-lg border border-border bg-card p-5">
+        <div className="flex flex-1 min-w-60 flex-col gap-5 rounded-lg border border-border bg-card p-5">
           {/* Header */}
           <div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">

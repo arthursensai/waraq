@@ -123,7 +123,7 @@ const CreateDocument = () => {
         form.handleSubmit();
       }}
     >
-      <div className="flex flex-1 min min-w-[250px]">
+      <div className="flex flex-1 min min-w-62.5">
         <div className="w-full h-full flex flex-col items-center justify-center">
           {isFileUploadSuccess && fileData?.coverUrl ? (
             <Image src={fileData?.coverUrl} alt="document cover" fill />

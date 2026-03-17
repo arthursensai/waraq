@@ -5,14 +5,14 @@ import Image from "next/image";
 import { Loader } from "@/components/ui/loader";
 import UpdateAuthor from "./updateAuthor";
 import DeleteAuthor from "./deleteAuthor";
-import { AvalaiblityType } from "@/lib/constants/types";
+import { notFound } from "next/navigation";
 
-const AuthorPreview = ({ id, type }: { id: string; type: AvalaiblityType }) => {
-  const { data: author, isLoading, isError } = useFetchAuthor({ id, type });
+const AuthorPreview = ({ id }: { id: string }) => {
+  const { data: author, isLoading, isError } = useFetchAuthor({ id });
 
   if (isLoading) return <Loader text="Loading Author details" />;
   if (isError) return <div>Error loading author</div>;
-  if (!author) return <div>No Avalaile Author </div>;
+  if (!author) notFound();
 
   return (
     <div className="w-full min-h-svh">
@@ -43,7 +43,7 @@ const AuthorPreview = ({ id, type }: { id: string; type: AvalaiblityType }) => {
           </div>
 
           {/* Actions */}
-          {type == "private" ? (
+          {author.type === "private" ? (
             <div className="w-full flex flex-col sm:flex-row gap-4 mt-auto">
               <div className="flex-1">
                 <UpdateAuthor author={author} />

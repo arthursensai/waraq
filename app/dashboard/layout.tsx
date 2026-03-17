@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/components/providers";
 import AppSidebar from "@/components/sections/sidebar";
 
+export const dynamic = "force-dynamic";
+
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false";

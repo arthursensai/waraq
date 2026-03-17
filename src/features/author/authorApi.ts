@@ -29,15 +29,13 @@ export const fetchAuthors = async ({ type }: { type: AvalaiblityType }) => {
 
 export const fetchAuthor = async ({
   id,
-  type,
 }: {
   id: string;
-  type: AvalaiblityType;
 }) => {
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from(`${type}_authors_view`)
+    .from("authors_view")
     .select("*")
     .eq("id", id)
     .single();

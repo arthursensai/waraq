@@ -49,7 +49,7 @@ const AuthorsPreview = ({ type }: { type: AvalaiblityType }) => {
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 content-start">
         {authors.map((author) => (
-          <AuthorCard key={author.id} author={author} type={type} />
+          <AuthorCard key={author.id} author={author} />
         ))}
       </div>
     </section>

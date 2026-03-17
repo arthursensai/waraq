@@ -16,7 +16,7 @@ const DocumentCard = ({ document }: AuthorPreviewProps) => {
   return (
     <Link
       href={`/dashboard/documents/${id}`}
-      className="group aspect-[3/4] w-full flex flex-col border border-border hover:border-border/80 transition-all duration-300 rounded-xl overflow-hidden cursor-pointer bg-card"
+      className="group aspect-3/4 w-full flex flex-col border border-border hover:border-border/80 transition-all duration-300 rounded-xl overflow-hidden cursor-pointer bg-card"
     >
       {/* Image area */}
       <div className="flex-1 relative bg-muted/20 overflow-hidden">

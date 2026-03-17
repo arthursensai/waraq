@@ -1,8 +1,6 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { AvalaiblityType } from "@/lib/constants/types";
 
 interface AuthorPreviewProps {
   author: {
@@ -11,16 +9,15 @@ interface AuthorPreviewProps {
     image_url: string;
     biography: string;
   };
-  type: AvalaiblityType;
 }
 
-const AuthorCard = ({ author, type }: AuthorPreviewProps) => {
+const AuthorCard = ({ author }: AuthorPreviewProps) => {
   const { full_name, image_url, biography, id } = author;
 
   return (
     <Link
-      href={`/dashboard/authors/${type}/${id}`}
-      className="group aspect-[3/4] w-full flex flex-col border border-border hover:border-border/80 transition-all duration-300 rounded-xl overflow-hidden cursor-pointer bg-card"
+      href={`/dashboard/authors/${id}`}
+      className="group aspect-3/4 w-full flex flex-col border border-border hover:border-border/80 transition-all duration-300 rounded-xl overflow-hidden cursor-pointer bg-card"
     >
       {/* Image area */}
       <div className="flex-1 relative bg-muted/20 overflow-hidden">
@@ -33,7 +30,7 @@ const AuthorCard = ({ author, type }: AuthorPreviewProps) => {
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
             {/* Name on image */}
             <div className="absolute bottom-0 left-0 right-0 p-4">
               <h3 className="text-white font-semibold text-base leading-tight line-clamp-2">

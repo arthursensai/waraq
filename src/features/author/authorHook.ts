@@ -35,15 +35,13 @@ export const useFetchAuthors = (type: AvalaiblityType) => {
 
 export const useFetchAuthor = ({
   id,
-  type,
 }: {
   id: string;
-  type: AvalaiblityType;
 }) => {
   return useQuery({
     queryKey: ["author", id],
     queryFn: () => {
-      return fetchAuthor({ id, type });
+      return fetchAuthor({ id });
     },
   });
 };

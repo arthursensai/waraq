@@ -1,26 +1,26 @@
 import type { NextConfig } from "next";
 
-const MAX_SIZE_MB = 50 
+const MAX_SIZE_MB = 50;
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
+  cacheComponents: process.env.NODE_ENV == "development",
   experimental: {
     proxyClientMaxBodySize: `${MAX_SIZE_MB}mb`,
   },
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: `${process.env.UPLOADTHING_ID}.ufs.sh`,
-        port: '',
-        pathname: '/f/**',
+        port: "",
+        pathname: "/f/**",
       },
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: `covers.openlibrary.org`,
-        port: '',
-        pathname: '/a/id/**'
-      }
+        port: "",
+        pathname: "/a/id/**",
+      },
     ],
   },
 };
