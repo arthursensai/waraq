@@ -1,7 +1,12 @@
 "use client";
 
 import { Suspense, use } from "react";
-import DocumentReader from "@/src/features/reader/components/documentReader";
+import dynamic from "next/dynamic";
+
+const DocumentReader = dynamic(
+  () => import("@/src/features/reader/components/documentReader"),
+  { ssr: false, loading: () => <span>Loading reader…</span> },
+);
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   return (
