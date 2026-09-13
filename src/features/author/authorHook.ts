@@ -9,8 +9,7 @@ import {
   updateAuthorImage,
 } from "./authorApi";
 import {
-  AuthorSchema,
-  AuthorSchemaType,
+  CreateAuthorSchemaType,
   UpdateAuthorSchemaType,
 } from "./authorSchema";
 import { toast } from "sonner";
@@ -20,7 +19,7 @@ import { AvalaiblityType } from "@/lib/constants/types";
 export const useFetchAllAuthors = () => {
   return useQuery({
     queryKey: [`all-authors`],
-    queryFn: fetchAllAuthors
+    queryFn: fetchAllAuthors,
   });
 };
 
@@ -51,21 +50,26 @@ export const useCreateAuthor = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (authorSchema: AuthorSchemaType) => {
+    mutationFn: async (authorSchema: CreateAuthorSchemaType) => {
       return createAuthor(authorSchema);
     },
     onMutate: () => {
       toast.loading("Creating your author...", { id: toastId });
     },
 
-    onError: (mutateIsError) => {
+    onError: () => {
       toast.error("Error creating your author", { id: toastId });
     },
 
     onSuccess: () => {
       toast.success("Your author was successfully created", { id: toastId });
 
-      queryClient.invalidateQueries({ queryKey: ["authors"] });
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          query.queryKey.some(
+            (k) => typeof k === "string" && k.endsWith("-authors"),
+          ),
+      });
     },
   });
 };
@@ -92,7 +96,7 @@ export const useUpdateAuthor = (id: string) => {
         id: toastId,
       });
     },
-    onError: (mutateIsError) => {
+    onError: () => {
       toast.error("Error updating your author data", { id: toastId });
     },
     onSuccess: () => {
@@ -109,7 +113,7 @@ export const useDeleteAuthor = (id: string) => {
 
   return useMutation({
     mutationFn: () => deleteAuthor(id),
-    onMutate: (mutateIsError) => {
+    onMutate: () => {
       toast.loading("Your author is currently being deleted...", {
         id: toastId,
       });
