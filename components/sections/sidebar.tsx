@@ -14,7 +14,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import ProfileModal from "@/src/features/profile/components/profileModal";
+import ProfileTrigger from "@/src/features/profile/components/profileTrigger";
 import Image from "next/image";
 import {
   ChevronDown,
@@ -106,8 +106,8 @@ const AppSidebar = () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg">
-              <ProfileModal />
+            <SidebarMenuButton size="lg" asChild>
+              <ProfileTrigger />
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
