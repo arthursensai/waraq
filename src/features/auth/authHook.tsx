@@ -16,7 +16,7 @@ export const useSignUp = () => {
       return handleSignUp(signUpCredentials);
     },
     onSuccess: () => {
-      router.push("/onBoarding");
+      router.push("/onboarding");
     },
   });
 };
@@ -48,7 +48,7 @@ export const useUpdatePassword = () => {
       await handleUpdatePassword(password);
     },
     onSuccess: () => {
-      router.push("/auth/sign-up-success");
+      router.push("/dashboard");
     },
   });
 };
