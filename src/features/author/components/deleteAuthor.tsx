@@ -38,7 +38,8 @@ const DeleteAuthor = ({ author }: DeleteAuthorProps) => {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete "
-            {full_name}" and all it's related documents.
+            {full_name}". Authors that still have documents attached can't
+            be deleted — reassign or delete those documents first.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
