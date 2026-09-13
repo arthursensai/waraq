@@ -66,7 +66,7 @@ const DocumentReader = ({ params }: { params: Promise<{ id: string }> }) => {
                   initialPage={document?.read_page}
                   onSavePage={async (page) => {
                     await updateCurrentPage({
-                      id: document?.file_url,
+                      id,
                       newPage: page,
                     });
                   }}
