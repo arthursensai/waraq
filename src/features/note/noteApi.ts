@@ -1,0 +1,76 @@
+import { createClient } from "@/lib/supabase/client";
+import { NoteSchemaType, NoteUpdateSchemaType } from "./noteSchema";
+
+export const fetchNotes = async () => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("notes")
+    .select("*, document:documents(id, title)")
+    .order("created_at", { ascending: false });
+
+  if (error) throw new Error("Error fetching notes");
+
+  return data;
+};
+
+export const fetchNote = async (id: string) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("notes")
+    .select("*, document:documents(id, title)")
+    .eq("id", id)
+    .single();
+
+  if (error) throw new Error("Error fetching note");
+
+  return data;
+};
+
+export const createNote = async (note: NoteSchemaType) => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("You must be signed in to create a note");
+
+  const { id, ...notePayload } = note;
+
+  const { data, error } = await supabase
+    .from("notes")
+    .insert({ ...notePayload, user_id: user.id })
+    .select()
+    .single();
+
+  if (error) throw new Error("Error creating your note");
+
+  return data;
+};
+
+export const updateNote = async (updatedNote: NoteUpdateSchemaType) => {
+  const { id, ...notePayload } = updatedNote;
+
+  if (!id) throw new Error("Note id is required to update a note");
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("notes")
+    .update(notePayload)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw new Error("Error updating your note");
+
+  return data;
+};
+
+export const deleteNote = async (id: string) => {
+  const supabase = createClient();
+  const { error } = await supabase.from("notes").delete().eq("id", id);
+
+  if (error) throw new Error("Error deleting your note");
+
+  return id;
+};
