@@ -2,7 +2,7 @@
 
 import { useForm } from "@tanstack/react-form";
 import { useCreateAuthor } from "../authorHook";
-import { AuthorSchema } from "../authorSchema";
+import { CreateAuthorSchema } from "../authorSchema";
 import { useState } from "react";
 import {
   Field,
@@ -19,7 +19,7 @@ import { RotateCcw } from "lucide-react";
 
 const CreateAuthor = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const { mutate, isSuccess } = useCreateAuthor();
+  const { mutate } = useCreateAuthor();
 
   const form = useForm({
     defaultValues: {
@@ -28,21 +28,23 @@ const CreateAuthor = () => {
       image_file: null as File | null,
     },
     validators: {
-      onSubmit: AuthorSchema,
-      onChange: AuthorSchema,
+      onSubmit: CreateAuthorSchema,
+      onChange: CreateAuthorSchema,
     },
-    onSubmit: async () => {
-      mutate({
-        id: "",
-        image_id: "",
-        full_name: form.getFieldValue("full_name"),
-        biography: form.getFieldValue("biography"),
-        image_file: imageFile,
-      });
-      if (isSuccess) {
-        form.reset();
-        setImageFile(null);
-      }
+    onSubmit: async ({ value }) => {
+      mutate(
+        {
+          full_name: value.full_name,
+          biography: value.biography,
+          image_file: imageFile,
+        },
+        {
+          onSuccess: () => {
+            form.reset();
+            setImageFile(null);
+          },
+        },
+      );
     },
   });
 
@@ -64,7 +66,10 @@ const CreateAuthor = () => {
           children={(field) => (
             <>
               <ImagePicker
-                onChange={(file) => setImageFile(file)}
+                onChange={(file) => {
+                  setImageFile(file);
+                  field.handleChange(file);
+                }}
                 size="full"
               />
               {field.state.meta.errors[0] && (
