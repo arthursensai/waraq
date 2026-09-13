@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same branch/PR so pushes don't queue up.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Read from repo secrets so nothing sensitive is ever hard-coded here.
+  # These should point at a small, dedicated *test* Supabase project -
+  # never production. See tests/e2e/README.md for how to set it up.
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+  E2E_TEST_USER_EMAIL: ${{ secrets.E2E_TEST_USER_EMAIL }}
+  E2E_TEST_USER_PASSWORD: ${{ secrets.E2E_TEST_USER_PASSWORD }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Unit & component tests
+        run: npm run test:run
+
+      - name: Build
+        run: npm run build
+
+      # Authenticated E2E flows need a dedicated test Supabase project
+      # (NEXT_PUBLIC_SUPABASE_URL) and a seeded test user. Without those
+      # secrets configured on the repo, this step is skipped entirely -
+      # the redirect/validation specs that DON'T need them still run in
+      # every push once that project exists, since the app's middleware
+      # talks to Supabase on every request either way.
+      - name: Install Playwright browsers
+        if: env.NEXT_PUBLIC_SUPABASE_URL != ''
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E tests
+        if: env.NEXT_PUBLIC_SUPABASE_URL != ''
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always() && env.NEXT_PUBLIC_SUPABASE_URL != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
