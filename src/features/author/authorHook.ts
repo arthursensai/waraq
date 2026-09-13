@@ -118,8 +118,10 @@ export const useDeleteAuthor = (id: string) => {
         id: toastId,
       });
     },
-    onError: () => {
-      toast.error("Error deleting your author", { id: toastId });
+    onError: (error: Error) => {
+      toast.error(error.message || "Error deleting your author", {
+        id: toastId,
+      });
     },
     onSuccess: () => {
       toast.success("Your author was successfully deleted", { id: toastId });

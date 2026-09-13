@@ -8,8 +8,17 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AvalaiblityType } from "@/lib/constants/types";
 
-const AuthorsPreview = ({ type }: { type: AvalaiblityType }) => {
+interface AuthorsPreviewProps {
+  type: AvalaiblityType;
+  searchQuery?: string;
+}
+
+const AuthorsPreview = ({ type, searchQuery = "" }: AuthorsPreviewProps) => {
   const { data: authors, isLoading, isError } = useFetchAuthors(type);
+
+  const filteredAuthors = authors?.filter((author) =>
+    author.full_name.toLowerCase().includes(searchQuery.trim().toLowerCase()),
+  );
 
   if (isLoading) {
     return (
@@ -42,13 +51,27 @@ const AuthorsPreview = ({ type }: { type: AvalaiblityType }) => {
     );
   }
 
+  if (!filteredAuthors?.length) {
+    return (
+      <section className="w-full h-full flex gap-4 flex-col">
+        <h3 className="field-legend">
+          {type == "private" ? "Your authors" : "Public authors"}
+        </h3>
+        <div className="w-full flex flex-col items-center justify-center gap-3 text-muted-foreground py-8">
+          <Users className="size-10 opacity-40" />
+          <p className="field-legend">No authors match your search</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="w-full h-full flex gap-4 flex-col">
       <h3 className="field-legend">
         {type == "private" ? "Your authors" : "Public authors"}
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 content-start">
-        {authors.map((author) => (
+        {filteredAuthors.map((author) => (
           <AuthorCard key={author.id} author={author} />
         ))}
       </div>
