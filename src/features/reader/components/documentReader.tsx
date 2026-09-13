@@ -13,11 +13,11 @@ import {
 } from "@embedpdf/plugin-scroll/react";
 import { RenderPluginPackage } from "@embedpdf/plugin-render/react";
 import { ZoomPluginPackage, ZoomMode } from "@embedpdf/plugin-zoom/react";
-import { usePdfiumEngine } from "@embedpdf/engines/react";
 import { FullscreenPluginPackage } from "@embedpdf/plugin-fullscreen/react";
 import DocumentViewer from "./documentViewer";
 import { DocumentRunTime, useFetchFile } from "../readerHooks";
-import { use } from "react";
+import { usePdfEngine } from "../pdfEngineProvider";
+import { use, useEffect } from "react";
 import { Loader } from "@/components/ui/loader";
 import { notFound } from "next/navigation";
 import { updateCurrentPage } from "../readerApi";
@@ -39,7 +39,11 @@ const DocumentReader = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
   const { data: document, isLoading, isError } = useFetchFile(id);
 
-  const { engine, isLoading: engineLoading } = usePdfiumEngine();
+  const { engine, isLoading: engineLoading, requestEngine } = usePdfEngine();
+
+  useEffect(() => {
+    requestEngine();
+  }, [requestEngine]);
 
   if (engineLoading || !engine) {
     return <Loader text="loading engine" size="lg" />;
