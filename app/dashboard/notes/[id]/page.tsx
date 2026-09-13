@@ -1,11 +1,11 @@
-const Page = ({ params }: { params: { id: Promise<string> } }) => {
-  const { id } = params;
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
 
   return (
     <div>
-        {id}
+      Note {id} — coming soon
     </div>
-  )
+  );
 };
 
 export default Page;

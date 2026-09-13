@@ -58,9 +58,9 @@ export const createAuthor = async ({
     .select()
     .single();
 
-  const { id } = await uploadAuthorImage(image_file, data.id);
+  if (error || !data) throw new Error("Error creating Author");
 
-  if (error) throw new Error("Error creating Author");
+  await uploadAuthorImage(image_file, data.id);
 
   return data;
 };

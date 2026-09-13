@@ -31,8 +31,17 @@ export const POST = checkAuth(async ({ req, supabase }) => {
 
   const buffer = await file.arrayBuffer();
 
-  const doc = MuPDF.Document.openDocument(buffer, "application/pdf");
-  const documentTotalPages = doc.countPages();
+  let documentTotalPages: number;
+  try {
+    const doc = MuPDF.Document.openDocument(buffer, "application/pdf");
+    documentTotalPages = doc.countPages();
+  } catch (err) {
+    console.log("Invalid PDF upload rejected:", err);
+    return NextResponse.json(
+      { error: "The uploaded file is not a valid PDF." },
+      { status: 400 },
+    );
+  }
 
   try {
     const savedFile = await saveFile(file);

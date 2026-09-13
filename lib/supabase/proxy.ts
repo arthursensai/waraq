@@ -63,8 +63,9 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const { pathname } = request.nextUrl;
 
   if (
@@ -97,7 +98,7 @@ export async function updateSession(request: NextRequest) {
         isComplete = cached === "true";
       } else {
         // ✅ اجلب مع retry
-        const result = await fetchProfileWithRetry(supabase, user.sub);
+        const result = await fetchProfileWithRetry(supabase, user.id);
 
         if (result === null) {
           // فشلت كل المحاولات — لا توجّه المستخدم، خليه يكمل

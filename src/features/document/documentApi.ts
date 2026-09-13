@@ -115,8 +115,21 @@ export const createDocument = async ({
 export const updateDocument = async (
   updatedDocument: DocumentUpdateSchemaType,
 ) => {
-  const { title, description, content_type, content_language } =
+  const { id, title, description, content_type, content_language } =
     updatedDocument;
+
+  if (!id) throw new Error("Document id is required to update a document");
+
   const supabase = createClient();
-  const {} = await supabase.from("documents").update({});
+
+  const { data, error } = await supabase
+    .from("documents")
+    .update({ title, description, content_type, content_language })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw new Error("Error updating your document");
+
+  return data;
 };
