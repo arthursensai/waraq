@@ -26,9 +26,8 @@ const DocumentViewer = ({
 
   const currentScale = (zoom as any)?.currentZoomLevel ?? 1;
   const renderScale =
-    currentScale *
-    (typeof window !== "undefined" ? window.devicePixelRatio : 1);
-
+  currentScale *
+  (typeof window !== "undefined" ? Math.min(window.devicePixelRatio, 2) : 1);
   return (
     <DocumentContent documentId={activeDocumentId}>
       {({ isLoaded, isLoading }) => (
