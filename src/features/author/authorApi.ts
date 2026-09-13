@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { uploadFiles } from "@/lib/uploadThing/image-router";
-import { AuthorSchemaType } from "./authorSchema";
+import { CreateAuthorSchemaType } from "./authorSchema";
 import { AvalaiblityType } from "@/lib/constants/types";
 
 export const fetchAllAuthors = async () => {
@@ -49,7 +49,7 @@ export const createAuthor = async ({
   full_name,
   biography,
   image_file,
-}: AuthorSchemaType) => {
+}: CreateAuthorSchemaType) => {
   const supabase = createClient();
 
   const { data, error } = await supabase
