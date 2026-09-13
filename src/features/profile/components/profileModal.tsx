@@ -11,7 +11,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSidebar } from "@/components/ui/sidebar";
 import { useForm } from "@tanstack/react-form";
 import {
   Field,
@@ -29,7 +28,6 @@ import LogoutButton from "../../auth/components/logoutDialog";
 
 const ProfileModal = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const { isMobile, setOpenMobile } = useSidebar();
 
   const {
     data: profile,
@@ -86,8 +84,8 @@ const ProfileModal = () => {
 
   return (
     <Dialog
+      modal={false}
       onOpenChange={(open) => {
-        if (open && isMobile) setOpenMobile(false);
         if (!open) handleClearForm();
       }}
     >
