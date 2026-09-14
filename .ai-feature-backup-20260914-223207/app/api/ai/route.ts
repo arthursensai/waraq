@@ -4,7 +4,7 @@ import { generateAiResponse } from "@/lib/ai";
 
 const MAX_QUESTION_LENGTH = 1000;
 
-export const POST = checkAuth(async ({ req, supabase, user }) => {
+export const POST = checkAuth(async ({ req, supabase }) => {
   const body = await req.json().catch(() => null);
   const documentId = body?.documentId as string | undefined;
   const question = (body?.question as string | undefined)?.trim();
@@ -52,22 +52,6 @@ User's question: ${question}`;
 
   try {
     const answer = await generateAiResponse(prompt);
-
-    // Persist the exchange so it survives navigation/reloads. This runs
-    // through the user's own client, so RLS still requires user_id to
-    // match auth.uid(). A history-save failure shouldn't fail the request
-    // the user is waiting on, so we only log it.
-    const { error: historyError } = await supabase
-      .from("ai_chat_messages")
-      .insert([
-        { user_id: user.id, document_id: documentId, role: "user", content: question },
-        { user_id: user.id, document_id: documentId, role: "ai", content: answer },
-      ]);
-
-    if (historyError) {
-      console.error("Failed to save AI chat history:", historyError);
-    }
-
     return NextResponse.json({ answer }, { status: 200 });
   } catch (err) {
     console.error("AI request failed:", err);

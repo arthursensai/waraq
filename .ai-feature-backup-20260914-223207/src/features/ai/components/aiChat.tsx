@@ -2,23 +2,12 @@
 
 import { useState, useRef, useEffect, FormEvent, KeyboardEvent } from "react";
 import Link from "next/link";
-import { ArrowLeft, Send, Sparkles, Trash2 } from "lucide-react";
+import { ArrowLeft, Send, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
-import { useAskAi, useChatHistory, useClearChatHistory } from "../aiHook";
+import { useAskAi } from "../aiHook";
 
 type ChatMessage = {
   id: string;
@@ -27,27 +16,14 @@ type ChatMessage = {
 };
 
 const AiChat = ({ documentId }: { documentId: string }) => {
-  const { data: history, isLoading: isHistoryLoading } =
-    useChatHistory(documentId);
-  const [pendingMessages, setPendingMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const { mutate: askAi, isPending } = useAskAi();
-  const { mutate: clearHistory, isPending: isClearing } =
-    useClearChatHistory();
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  // Once the history refetches after a successful ask, the confirmed
-  // question/answer pair now lives in `history` — drop the optimistic
-  // copies so nothing is shown twice.
-  useEffect(() => {
-    setPendingMessages([]);
-  }, [history]);
-
-  const messages: ChatMessage[] = [...(history ?? []), ...pendingMessages];
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages.length, isPending]);
+  }, [messages, isPending]);
 
   const sendMessage = () => {
     const question = input.trim();
@@ -58,14 +34,14 @@ const AiChat = ({ documentId }: { documentId: string }) => {
       role: "user",
       content: question,
     };
-    setPendingMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
     askAi(
       { documentId, question },
       {
         onSuccess: (answer) => {
-          setPendingMessages((prev) => [
+          setMessages((prev) => [
             ...prev,
             { id: crypto.randomUUID(), role: "ai", content: answer },
           ]);
@@ -89,64 +65,21 @@ const AiChat = ({ documentId }: { documentId: string }) => {
   return (
     <div className="flex h-full w-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon-sm" asChild>
-            <Link href={`/dashboard/documents/${documentId}/read`}>
-              <ArrowLeft size={16} />
-            </Link>
-          </Button>
-          <div className="flex items-center gap-2">
-            <Sparkles size={16} className="text-muted-foreground" />
-            <span className="text-sm font-medium">
-              Ask AI about this document
-            </span>
-          </div>
+      <div className="flex items-center gap-3 border-b border-border px-4 py-3">
+        <Button variant="ghost" size="icon-sm" asChild>
+          <Link href={`/dashboard/documents/${documentId}/read`}>
+            <ArrowLeft size={16} />
+          </Link>
+        </Button>
+        <div className="flex items-center gap-2">
+          <Sparkles size={16} className="text-muted-foreground" />
+          <span className="text-sm font-medium">Ask AI about this document</span>
         </div>
-
-        {messages.length > 0 && (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                disabled={isClearing}
-                title="Clear chat history"
-              >
-                <Trash2 size={16} />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Clear chat history?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This will permanently delete your conversation about this
-                  document. This action cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => clearHistory(documentId)}
-                  disabled={isClearing}
-                >
-                  Clear
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
-        {isHistoryLoading && (
-          <div className="flex justify-center py-6">
-            <Spinner className="size-4" />
-          </div>
-        )}
-
-        {!isHistoryLoading && messages.length === 0 && (
+        {messages.length === 0 && (
           <p className="mx-auto max-w-md text-center text-sm text-muted-foreground">
             Ask a question about this document's title, description, author, or
             content — for example, "What is this book about?" or "Who is the
