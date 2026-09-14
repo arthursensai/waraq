@@ -7,7 +7,7 @@ export const handleSignUp = async ({ email, password }: SignUpSchemaType) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${window.location.origin}/dashboard`,
+      emailRedirectTo: `${window.location.origin}/onboarding`,
     },
   });
 
