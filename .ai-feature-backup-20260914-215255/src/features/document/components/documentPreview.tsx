@@ -38,7 +38,7 @@ const DocumentPreview = ({ id }: { id: string }) => {
               <ArrowRight size={14} />
             </Link>
           </Button>
-          <AiChatLink documentId={id} />
+	  <AiChatLink />
 
           <div className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4">
             {/* Progress */}
