@@ -27,8 +27,12 @@ export const useLogin = () => {
     mutationFn: async (loginCredentials: LoginSchemaType) => {
       return handleLogin(loginCredentials);
     },
-    onSuccess: () => {
-      router.push("/dashboard");
+    onSuccess: (data) => {
+      if(!data.session) {
+        router.push("/auth/sign-up-success");
+      } else {
+        router.push("onboarding");
+      }
     },
   });
 };
