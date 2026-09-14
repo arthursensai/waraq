@@ -85,7 +85,7 @@ export const fetchProfile = async () => {
 export const updateImage = async (
   imageFile: File,
   profileId: string,
-  imageId: string,
+  imageId?: string | null,
 ) => {
   const supabase = createClient();
 
@@ -104,14 +104,16 @@ export const updateImage = async (
 
   const fileData = res[0];
 
-  await supabase
-    .from("images")
-    .update({
-      owner_id: null,
-      owner_type: null,
-      nulled_at: new Date().toISOString(),
-    })
-    .eq("id", imageId);
+  if (imageId) {
+    await supabase
+      .from("images")
+      .update({
+        owner_id: null,
+        owner_type: null,
+        nulled_at: new Date().toISOString(),
+      })
+      .eq("id", imageId);
+  }
 
   const { data, error } = await supabase
     .from("images")
