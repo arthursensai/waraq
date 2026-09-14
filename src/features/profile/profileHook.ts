@@ -57,7 +57,7 @@ export const useUpdateProfile = () => {
     }: {
       profileId: string;
       username: string;
-      imageId: string;
+      imageId: string | null;
       imageFile?: File;
     }) => {
       await Promise.all([
