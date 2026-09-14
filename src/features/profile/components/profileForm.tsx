@@ -28,7 +28,7 @@ const ProfileForm = () => {
       id: profile?.id ?? "",
       username: profile?.username ?? "",
       image_file: null as File | null,
-      image_id: profile?.image_id ?? "",
+      image_id: profile?.image_id ?? (null as string | null),
     },
     validators: {
       onChange: ProfileSchema,
@@ -46,7 +46,7 @@ const ProfileForm = () => {
   useEffect(() => {
     form.setFieldValue("username", profile?.username);
     form.setFieldValue("id", profile?.id);
-    form.setFieldValue("image_id", profile?.image_id);
+    form.setFieldValue("image_id", profile?.image_id ?? null);
   }, [profile]);
 
   if (isLoading)
