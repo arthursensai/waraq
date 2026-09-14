@@ -18,12 +18,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
-import {
-  useAskAi,
-  useChatHistory,
-  useClearChatHistory,
-  useDocumentRagStatus,
-} from "../aiHook";
+import { useAskAi, useChatHistory, useClearChatHistory } from "../aiHook";
 
 type ChatMessage = {
   id: string;
@@ -34,7 +29,6 @@ type ChatMessage = {
 const AiChat = ({ documentId }: { documentId: string }) => {
   const { data: history, isLoading: isHistoryLoading } =
     useChatHistory(documentId);
-  const { data: ragStatus } = useDocumentRagStatus(documentId);
   const [pendingMessages, setPendingMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const { mutate: askAi, isPending } = useAskAi();
@@ -143,19 +137,6 @@ const AiChat = ({ documentId }: { documentId: string }) => {
           </AlertDialog>
         )}
       </div>
-
-      {(ragStatus === "pending" || ragStatus === "processing") && (
-        <div className="border-b border-border bg-muted/50 px-4 py-2 text-xs text-muted-foreground">
-          Indexing this document's content for deeper answers — you can keep
-          chatting in the meantime using its title and description.
-        </div>
-      )}
-      {ragStatus === "failed" && (
-        <div className="border-b border-border bg-muted/50 px-4 py-2 text-xs text-muted-foreground">
-          Couldn't fully index this document's content; answers will rely on
-          its title and description only.
-        </div>
-      )}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-6">

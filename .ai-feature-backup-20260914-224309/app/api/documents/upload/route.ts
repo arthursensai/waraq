@@ -3,14 +3,7 @@ import { saveFile } from "@/src/features/files/filesApi";
 import { checkAuth } from "@/handlers/checkAuth";
 import MuPDF from "mupdf";
 
-// NOTE: Vercel Serverless Functions (Node.js runtime, non-Edge) cap request
-// bodies at 4.5MB. A 50MB upload through this route will be rejected by the
-// platform before this handler even runs. To actually support 50MB files
-// you need a direct-to-storage upload (e.g. UploadThing's client-side
-// upload flow, or a Supabase Storage signed URL) so the big binary never
-// passes through this function — then have this route (or a follow-up call)
-// just receive the resulting file URL/key and metadata.
-const MAX_SIZE_MB = 50;
+const MAX_SIZE_MB = 8;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 
 const extractPdfCover = async (buffer: ArrayBuffer): Promise<File> => {

@@ -23,24 +23,6 @@ export const fetchChatHistory = async (
   return data;
 };
 
-export type RagStatus = "pending" | "processing" | "ready" | "failed";
-
-export const fetchDocumentRagStatus = async (
-  documentId: string,
-): Promise<RagStatus> => {
-  const supabase = createClient();
-
-  const { data, error } = await supabase
-    .from("documents")
-    .select("rag_status")
-    .eq("id", documentId)
-    .single();
-
-  if (error) throw new Error("Error fetching document indexing status");
-
-  return data.rag_status as RagStatus;
-};
-
 export const clearChatHistory = async (documentId: string) => {
   const supabase = createClient();
 

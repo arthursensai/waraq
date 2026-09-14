@@ -1,31 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import {
-  askAi,
-  clearChatHistory,
-  fetchChatHistory,
-  fetchDocumentRagStatus,
-} from "./aiApi";
+import { askAi, clearChatHistory, fetchChatHistory } from "./aiApi";
 
 export const useChatHistory = (documentId: string) => {
   return useQuery({
     queryKey: ["ai-chat", documentId],
     queryFn: () => fetchChatHistory(documentId),
     enabled: !!documentId,
-  });
-};
-
-export const useDocumentRagStatus = (documentId: string) => {
-  return useQuery({
-    queryKey: ["ai-chat-rag-status", documentId],
-    queryFn: () => fetchDocumentRagStatus(documentId),
-    enabled: !!documentId,
-    // Indexing runs in the background (pg_cron, ~1/min); poll gently while
-    // it's not done yet so the banner clears on its own.
-    refetchInterval: (query) =>
-      query.state.data === "pending" || query.state.data === "processing"
-        ? 15_000
-        : false,
   });
 };
 
