@@ -13,6 +13,7 @@ import {
   ContentType,
   contentTypesDict,
 } from "../constants";
+import AiChatLink from "@/src/features/ai/components/aiChatLink";
 
 const DocumentPreview = ({ id }: { id: string }) => {
   const { data: document, isLoading, isError } = useFetchDocument(id);
@@ -37,6 +38,7 @@ const DocumentPreview = ({ id }: { id: string }) => {
               <ArrowRight size={14} />
             </Link>
           </Button>
+	  <AiChatLink />
 
           <div className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4">
             {/* Progress */}

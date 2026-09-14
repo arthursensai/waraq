@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const MAX_SIZE_MB = 50;
 
 const nextConfig: NextConfig = {
-  cacheComponents: process.env.NODE_ENV == "development",
+  cacheComponents: false,
   experimental: {
     proxyClientMaxBodySize: `${MAX_SIZE_MB}mb`,
   },
