@@ -1,14 +1,8 @@
 import ai from "./index";
 
-// text-embedding-004 has a generous free-tier quota and 768 dimensions is
-// enough for good retrieval quality on a personal library while keeping the
-// pgvector index small.
-const EMBEDDING_MODEL = "text-embedding-004";
+const EMBEDDING_MODEL = "gemini-embedding-001";
 export const EMBEDDING_DIMENSIONS = 768;
 
-// The Gemini embedding API accepts a batch of strings per call; keeping
-// batches modest avoids hitting per-request payload/size limits on large
-// documents with thousands of chunks.
 const BATCH_SIZE = 32;
 
 export const embedTexts = async (texts: string[]): Promise<number[][]> => {
