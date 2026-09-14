@@ -40,7 +40,7 @@ export const ProfileSchema = z.object({
       "Only JPEG, PNG, WebP, GIF and SVG files are accepted.",
     )
     .nullable(),
-  image_id: z.uuid(),
+  image_id: z.uuid().nullable().optional(),
 });
 
 export type onBoardingSchemaType = z.infer<typeof OnBoardingSchema>;
