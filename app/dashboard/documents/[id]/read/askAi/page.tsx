@@ -1,9 +1,13 @@
-const page = () => {
-	return (
-		<section>
-			<p>here you can ask the ai</p>
-		</section>
-	)
-}
+import AiChat from "@/src/features/ai/components/aiChat";
 
-export default page;
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+
+  return (
+    <section className="h-full w-full">
+      <AiChat documentId={id} />
+    </section>
+  );
+};
+
+export default Page;
