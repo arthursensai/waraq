@@ -21,7 +21,7 @@ export const useOnBoarding = () => {
       username: string;
       imageFile: File;
     }) => {
-      handleOnBoarding({ username, imageFile });
+      return await handleOnBoarding({ username, imageFile });
     },
     onMutate: () => {
       toast.loading("Creating your profile...", { id: toastId });
