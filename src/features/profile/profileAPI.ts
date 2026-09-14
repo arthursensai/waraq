@@ -52,10 +52,11 @@ export const handleOnBoarding = async ({
 
   const user_id = (await supabase.auth.getUser()).data.user?.id;
 
+  if (!user_id) throw new Error("No user session found");
+
   const { data, error } = await supabase
     .from("profiles")
-    .update({ username })
-    .eq("user_id", user_id)
+    .upsert({ user_id, username }, { onConflict: "user_id" })
     .select()
     .single();
 
