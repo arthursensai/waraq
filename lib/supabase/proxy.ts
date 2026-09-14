@@ -18,13 +18,10 @@ async function fetchProfileWithRetry(
         .eq("user_id", userId)
         .single();
 
-      // نجح الطلب
       if (!error) return !!data?.username;
-
-      // مو مشكلة شبكة — المستخدم فعلاً ما عنده profile
+      
       if (error.code === "PGRST116") return false;
-
-      // مشكلة شبكة — نحاول مرة ثانية
+      
       if (attempt < retries - 1) {
         await new Promise((res) => setTimeout(res, RETRY_DELAY_MS * (attempt + 1)));
       }
@@ -35,7 +32,6 @@ async function fetchProfileWithRetry(
     }
   }
 
-  // فشلت كل المحاولات — نرجع null يعني "مو عارفين"
   return null;
 }
 
@@ -88,30 +84,117 @@ export async function updateSession(request: NextRequest) {
       pathname === "/";
 
     if (!isPublic) {
-      // ✅ تحقق من الكاش أولاً
       const cached = request.cookies.get(PROFILE_CACHE_COOKIE)?.value;
 
       let isComplete: boolean;
 
-      if (cached !== undefined) {
-        // ✅ استخدم الكاش — بدون ما تكلم Supabase
-        isComplete = cached === "true";
+      if (cached === "true") {
+        isComplete = true;
       } else {
-        // ✅ اجلب مع retry
         const result = await fetchProfileWithRetry(supabase, user.id);
 
         if (result === null) {
-          // فشلت كل المحاولات — لا توجّه المستخدم، خليه يكمل
           return supabaseResponse;
         }
 
         isComplete = result;
 
-        // ✅ احفظ في كوكيز لتجنب الطلبات الزايدة
+        if (isComplete) {
+          supabaseResponse.cookies.set(PROFILE_CACHE_COOKIE, "true", {
+            httpOnly: true,
+            sameSite: "lax",
+            maxAge: 60 * 5,
+          });
+        }
+      }
+
+      if (!isComplete && !isOnboarding) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/onboarding";
+        return NextResponse.redirect(url);
+      }
+
+      if (isComplete && isOnboarding) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/dashboard";
+        return NextResponse.redirect(url);
+      }
+    }
+  }
+
+  return supabaseResponse;
+}
+  return null;
+}
+
+export async function updateSession(request: NextRequest) {
+  let supabaseResponse = NextResponse.next({ request });
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
+          supabaseResponse = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const { pathname } = request.nextUrl;
+
+  if (
+    pathname !== "/" &&
+    !user &&
+    !pathname.startsWith("/api") &&
+    !pathname.startsWith("/login") &&
+    !pathname.startsWith("/auth")
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/login";
+    return NextResponse.redirect(url);
+  }
+
+  if (user) {
+    const isOnboarding = pathname === "/onboarding";
+    const isPublic =
+      pathname.startsWith("/auth") ||
+      pathname.startsWith("/api") ||
+      pathname === "/";
+
+    if (!isPublic) {
+      const cached = request.cookies.get(PROFILE_CACHE_COOKIE)?.value;
+
+      let isComplete: boolean;
+
+      if (cached !== undefined) {
+        isComplete = cached === "true";
+      } else {
+        const result = await fetchProfileWithRetry(supabase, user.id);
+
+        if (result === null) {
+          return supabaseResponse;
+        }
+
+        isComplete = result;
+
         supabaseResponse.cookies.set(PROFILE_CACHE_COOKIE, String(isComplete), {
           httpOnly: true,
           sameSite: "lax",
-          maxAge: 60 * 5, // 5 دقايق
+          maxAge: 60 * 5,
         });
       }
 
