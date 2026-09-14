@@ -2,7 +2,7 @@
 
 **Your personal reading library.** Upload your PDFs, track your reading progress, and organize your documents by author — all from a single, focused library built for readers who mean it.
 
-🔗 **Live demo:** [waraq1.vercel.app](https://waraq1.vercel.app)
+🔗 **Live demo:** [waraq1.vercel.app](https://waraq.tech)
 
 ---
 
