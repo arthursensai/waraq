@@ -1,5 +1,41 @@
 import { createClient } from "@/lib/supabase/client";
 
+export type ChatMessageRow = {
+  id: string;
+  role: "user" | "ai";
+  content: string;
+  created_at: string;
+};
+
+export const fetchChatHistory = async (
+  documentId: string,
+): Promise<ChatMessageRow[]> => {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("ai_chat_messages")
+    .select("id, role, content, created_at")
+    .eq("document_id", documentId)
+    .order("created_at", { ascending: true });
+
+  if (error) throw new Error("Error fetching chat history");
+
+  return data;
+};
+
+export const clearChatHistory = async (documentId: string) => {
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from("ai_chat_messages")
+    .delete()
+    .eq("document_id", documentId);
+
+  if (error) throw new Error("Error clearing chat history");
+
+  return documentId;
+};
+
 export const askAi = async ({
   documentId,
   question,
