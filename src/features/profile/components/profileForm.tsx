@@ -25,10 +25,10 @@ const ProfileForm = () => {
 
   const form = useForm({
     defaultValues: {
-      id: profile?.username ?? "",
+      id: profile?.id ?? "",
       username: profile?.username ?? "",
       image_file: null as File | null,
-      image_id: profile?.id ?? "",
+      image_id: profile?.image_id ?? "",
     },
     validators: {
       onChange: ProfileSchema,
