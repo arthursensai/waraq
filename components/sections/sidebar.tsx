@@ -17,11 +17,7 @@ import Link from "next/link";
 import ProfileTrigger from "@/src/features/profile/components/profileTrigger";
 import Image from "next/image";
 import {
-  ChevronDown,
-  LayoutDashboard,
-  Library,
-  NotebookPen,
-  Users,
+  ChevronDown
 } from "lucide-react";
 import {
   Collapsible,
