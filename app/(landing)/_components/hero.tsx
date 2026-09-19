@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { motion, type Variants } from "framer-motion";
-import { Suspense } from "react";
 import { ChevronDown } from "lucide-react";
 import HeroActions from "./hero-actions";
 

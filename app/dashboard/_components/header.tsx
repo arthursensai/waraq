@@ -10,6 +10,7 @@ const SafeSidebarTrigger = () => {
     useSidebar();
     return <SidebarTrigger />;
   } catch (e) {
+	  console.error(e);
     return null;
   }
 };
