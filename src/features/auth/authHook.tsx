@@ -31,7 +31,7 @@ export const useLogin = () => {
       if(!data.session) {
         router.push("/auth/sign-up-success");
       } else {
-        router.push("onboarding");
+        router.push("/onboarding");
       }
     },
   });
