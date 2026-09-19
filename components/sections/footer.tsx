@@ -28,8 +28,16 @@ const Footer = () => {
             Waraq
           </span>
 
-          {/* Right: Theme switcher */}
-          <ThemeSwitcher />
+          {/* Right: Legal link + Theme switcher */}
+          <div className="flex items-center gap-4">
+            <Link
+              href="/data-safety"
+              className="text-xs text-muted-foreground hover:text-primary transition-colors duration-200"
+            >
+              Data Safety
+            </Link>
+            <ThemeSwitcher />
+          </div>
 
         </div>
       </div>
