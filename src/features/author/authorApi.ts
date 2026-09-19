@@ -164,6 +164,7 @@ export const updateAuthorImage = async ({
       owner_type: null,
       nulled_at: new Date().toISOString(),
     })
+    .eq("id", imageId)
     .eq("owner_id", authorId)
     .eq("owner_type", "author");
 

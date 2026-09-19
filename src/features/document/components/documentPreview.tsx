@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import { Loader } from "@/components/ui/loader";
 import { notFound } from "next/navigation";
 import Link from "next/link";

@@ -11,17 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Check, RotateCcw, Upload, X } from "lucide-react";
+import { RotateCcw, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useForm } from "@tanstack/react-form";
 import {
   Field,
-  FieldDescription,
-  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import {
   InputGroup,
@@ -41,7 +39,7 @@ import { useStore } from "@tanstack/react-form";
 import Image from "next/image";
 
 const CreateDocument = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [, setFile] = useState<File | null>(null);
   const { data: authors } = useFetchAllAuthors();
 
   const [fileData, setFileData] = useState<{
@@ -53,7 +51,6 @@ const CreateDocument = () => {
 
   const {
     mutate: mutateFile,
-    data: receivedFileData,
     isPending: isFileUploading,
     isSuccess: isFileUploadSuccess,
     isIdle,
@@ -154,10 +151,8 @@ const CreateDocument = () => {
         <div className="flex flex-1 flex-col gap-4">
           <h1 className="text-lg field-legend">File Details</h1>
           <FieldGroup>
-            <form.Field
-              name="title"
-              children={(field) => {
-                const isInvalid = "";
+            <form.Field name="title">
+              {(field) => {
                 return (
                   <Field className="flex flex-col gap-4">
                     <FieldLabel>Title:</FieldLabel>
@@ -170,11 +165,10 @@ const CreateDocument = () => {
                   </Field>
                 );
               }}
-            />
+            </form.Field>
 
-            <form.Field
-              name="author_id"
-              children={(field) => (
+            <form.Field name="author_id">
+              {(field) => (
                 <Field className="flex flex-col gap-4">
                   <FieldLabel>Author:</FieldLabel>
                   <Select
@@ -197,11 +191,10 @@ const CreateDocument = () => {
                   </Select>
                 </Field>
               )}
-            />
+            </form.Field>
 
-            <form.Field
-              name="description"
-              children={(field) => (
+            <form.Field name="description">
+              {(field) => (
                 <Field className="flex flex-col gap-4">
                   <FieldLabel>Description:</FieldLabel>
                   <Textarea
@@ -214,11 +207,10 @@ const CreateDocument = () => {
                   />
                 </Field>
               )}
-            />
+            </form.Field>
 
-            <form.Field
-              name="content_language"
-              children={(field) => (
+            <form.Field name="content_language">
+              {(field) => (
                 <Field className="flex flex-col gap-4">
                   <FieldLabel>Language:</FieldLabel>
                   <Select
@@ -244,11 +236,10 @@ const CreateDocument = () => {
                   </Select>
                 </Field>
               )}
-            />
+            </form.Field>
 
-            <form.Field
-              name="content_type"
-              children={(field) => (
+            <form.Field name="content_type">
+              {(field) => (
                 <Field className="flex flex-col gap-4">
                   <FieldLabel>Type:</FieldLabel>
                   <Select
@@ -275,11 +266,10 @@ const CreateDocument = () => {
                   </Select>
                 </Field>
               )}
-            />
+            </form.Field>
 
-            <form.Field
-              name="read_page"
-              children={(field) => (
+            <form.Field name="read_page">
+              {(field) => (
                 <Field>
                   <FieldLabel>your progess:</FieldLabel>
                   <InputGroup className="">
@@ -298,7 +288,7 @@ const CreateDocument = () => {
                   </InputGroup>
                 </Field>
               )}
-            />
+            </form.Field>
           </FieldGroup>
         </div>
         <div className="flex gap-4 bottom-0">

@@ -1,15 +1,5 @@
 "use client";
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { AuthorSchema } from "../authorSchema";
 import { Button } from "@/components/ui/button";
 import { useForm } from "@tanstack/react-form";
@@ -115,9 +105,9 @@ const UpdateAuthor = ({ author }: UpdateAuthorProps) => {
               <X />
             </Button>
           </DrawerClose>
-          <DrawerTitle>Update Author's details</DrawerTitle>
+          <DrawerTitle>Update Author&apos;s details</DrawerTitle>
           <DrawerDescription>
-            Here you can update the author's details.
+            Here you can update the author&apos;s details.
           </DrawerDescription>
         </DrawerHeader>
 
@@ -128,9 +118,8 @@ const UpdateAuthor = ({ author }: UpdateAuthorProps) => {
         >
           <div className="flex-1 overflow-y-auto p-4">
             <FieldGroup className="w-full">
-              <form.Field
-                name="image_file"
-                children={(field) => (
+              <form.Field name="image_file">
+                {(field) => (
                   <div className="w-full flex items-center justify-center py-2">
                     <ImagePicker
                       value={author.image_url}
@@ -139,11 +128,10 @@ const UpdateAuthor = ({ author }: UpdateAuthorProps) => {
                     />
                   </div>
                 )}
-              />
+              </form.Field>
 
-              <form.Field
-                name="full_name"
-                children={(field) => {
+              <form.Field name="full_name">
+                {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
@@ -165,11 +153,10 @@ const UpdateAuthor = ({ author }: UpdateAuthorProps) => {
                     </Field>
                   );
                 }}
-              />
+              </form.Field>
 
-              <form.Field
-                name="biography"
-                children={(field) => {
+              <form.Field name="biography">
+                {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
@@ -192,7 +179,7 @@ const UpdateAuthor = ({ author }: UpdateAuthorProps) => {
                     </Field>
                   );
                 }}
-              />
+              </form.Field>
             </FieldGroup>
           </div>
 

@@ -7,7 +7,6 @@ import { useState } from "react";
 import {
   Field,
   FieldError,
-  FieldGroup,
   FieldLabel,
   FieldLegend,
 } from "@/components/ui/field";
@@ -61,9 +60,8 @@ const CreateAuthor = () => {
       className="flex flex-col md:flex-row w-full h-full overflow-hidden"
     >
       <div className="flex flex-col items-center justify-center w-full md:w-1/2 shrink-0 border-b md:border-b-0 md:border-r border-border px-5 py-6 md:pt-8 md:pb-6 h-48 md:h-full gap-2">
-        <form.Field
-          name="image_file"
-          children={(field) => (
+        <form.Field name="image_file">
+          {(field) => (
             <>
               <ImagePicker
                 onChange={(file) => {
@@ -77,7 +75,7 @@ const CreateAuthor = () => {
               )}
             </>
           )}
-        />
+        </form.Field>
       </div>
 
       <div className="flex flex-col flex-1 min-h-0">
@@ -86,9 +84,8 @@ const CreateAuthor = () => {
         </div>
 
         <div className="flex flex-col gap-6 px-7 py-6 flex-1 overflow-y-auto">
-          <form.Field
-            name="full_name"
-            children={(field) => {
+          <form.Field name="full_name">
+            {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
@@ -115,11 +112,10 @@ const CreateAuthor = () => {
                 </Field>
               );
             }}
-          />
+          </form.Field>
 
-          <form.Field
-            name="biography"
-            children={(field) => {
+          <form.Field name="biography">
+            {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
@@ -149,7 +145,7 @@ const CreateAuthor = () => {
                 </Field>
               );
             }}
-          />
+          </form.Field>
         </div>
 
         <div className="flex items-center gap-2 p-2 border-t border-border shrink-0">

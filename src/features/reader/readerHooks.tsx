@@ -29,9 +29,12 @@ export const DocumentRunTime = ({ url }: { url: string }) => {
   return null;
 };
 
-const debounce = (fn: (...args: any[]) => void, delay: number) => {
+const debounce = <Args extends unknown[]>(
+  fn: (...args: Args) => void,
+  delay: number,
+) => {
   let timer: NodeJS.Timeout;
-  return (...args: any[]) => {
+  return (...args: Args) => {
     clearTimeout(timer);
     timer = setTimeout(() => fn(...args), delay);
   };

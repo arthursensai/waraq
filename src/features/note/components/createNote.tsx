@@ -47,9 +47,8 @@ const CreateNote = () => {
       <h1 className="text-lg field-legend">New Note</h1>
 
       <FieldGroup>
-        <form.Field
-          name="title"
-          children={(field) => (
+        <form.Field name="title">
+          {(field) => (
             <Field className="flex flex-col gap-2">
               <FieldLabel>Title (optional):</FieldLabel>
               <Input
@@ -60,11 +59,10 @@ const CreateNote = () => {
               />
             </Field>
           )}
-        />
+        </form.Field>
 
-        <form.Field
-          name="document_id"
-          children={(field) => (
+        <form.Field name="document_id">
+          {(field) => (
             <Field className="flex flex-col gap-2">
               <FieldLabel>Attach to a document (optional):</FieldLabel>
               <Select
@@ -86,11 +84,10 @@ const CreateNote = () => {
               </Select>
             </Field>
           )}
-        />
+        </form.Field>
 
-        <form.Field
-          name="content"
-          children={(field) => (
+        <form.Field name="content">
+          {(field) => (
             <Field className="flex flex-col gap-2">
               <FieldLabel>Note:</FieldLabel>
               <Textarea
@@ -103,7 +100,7 @@ const CreateNote = () => {
               />
             </Field>
           )}
-        />
+        </form.Field>
       </FieldGroup>
 
       <Button type="submit" disabled={!canSubmit || isPending}>

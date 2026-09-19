@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { useLogout } from "../authHook";
 
 const LogoutButton = () => {
@@ -27,7 +27,7 @@ const LogoutButton = () => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            you'll have to use your credentials for futur login.{" "}
+            you&apos;ll have to use your credentials for futur login.{" "}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

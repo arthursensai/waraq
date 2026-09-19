@@ -3,10 +3,7 @@
 import { createPluginRegistration } from "@embedpdf/core";
 import { EmbedPDF } from "@embedpdf/core/react";
 import { DocumentManagerPluginPackage } from "@embedpdf/plugin-document-manager/react";
-import {
-  Viewport,
-  ViewportPluginPackage,
-} from "@embedpdf/plugin-viewport/react";
+import { ViewportPluginPackage } from "@embedpdf/plugin-viewport/react";
 import {
   ScrollPluginPackage,
   ScrollStrategy,

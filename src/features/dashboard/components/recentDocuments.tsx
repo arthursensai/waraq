@@ -7,18 +7,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchDocuments } from "../../document/documentHook";
 
+interface RecentDocument {
+  id: string;
+  title: string;
+  author_name?: string | null;
+  created_at?: string | null;
+}
+
 const RecentDocuments = () => {
   const { data: documents, isLoading } = useFetchDocuments();
 
   const recent = useMemo(() => {
     if (!documents) return [];
     // Falls back to the order returned by the API if created_at isn't present.
-    const sorted = [...documents].sort((a: any, b: any) => {
-      if (!a.created_at || !b.created_at) return 0;
-      return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-    });
+    const sorted = [...(documents as RecentDocument[])].sort(
+      (a, b) => {
+        if (!a.created_at || !b.created_at) return 0;
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      },
+    );
     return sorted.slice(0, 5);
   }, [documents]);
 
@@ -40,7 +49,7 @@ const RecentDocuments = () => {
         )}
 
         {!isLoading &&
-          recent.map((doc: any) => (
+          recent.map((doc) => (
             <Link
               key={doc.id}
               href={`/dashboard/documents/${doc.id}`}

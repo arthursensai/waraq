@@ -70,7 +70,7 @@ export const useUpdateProfile = () => {
       toast.loading("Updating your profile...", { id: toastId });
     },
 
-    onError: (mutateIsError) => {
+    onError: () => {
       toast.error("Error updating your profile", { id: toastId });
     },
 

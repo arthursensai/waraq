@@ -11,7 +11,7 @@ interface AuthorPreviewProps {
 }
 
 const DocumentCard = ({ document }: AuthorPreviewProps) => {
-  const { id, title, author_name, description } = document;
+  const { id, title, description } = document;
 
   return (
     <Link
