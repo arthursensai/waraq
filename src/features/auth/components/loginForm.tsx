@@ -57,9 +57,8 @@ const LoginForm = () => {
           className="flex flex-col gap-4"
         >
           <FieldGroup>
-            <form.Field
-              name="email"
-              children={(field) => {
+            <form.Field name="email">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.errors[0] && !field.state.value;
                 return (
@@ -84,10 +83,9 @@ const LoginForm = () => {
                   </Field>
                 );
               }}
-            />
-            <form.Field
-              name="password"
-              children={(field) => {
+            </form.Field>
+            <form.Field name="password">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.errors[0] && !field.state.value;
                 return (
@@ -112,7 +110,7 @@ const LoginForm = () => {
                   </Field>
                 );
               }}
-            />
+            </form.Field>
           </FieldGroup>
           {error && <p className="text-destructive">{error.message}</p>}
           <Button type="submit" className="w-full" disabled={isPending}>

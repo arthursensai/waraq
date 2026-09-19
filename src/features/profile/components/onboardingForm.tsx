@@ -59,9 +59,8 @@ const OnBoardingForm = () => {
 
         <CardContent className="mt-4">
           <FieldGroup>
-            <form.Field
-              name="image_file"
-              children={(field) => (
+            <form.Field name="image_file">
+              {(field) => (
                 <Field>
                   <FieldLabel className="text-sm font-medium">
                     Profile picture
@@ -79,11 +78,10 @@ const OnBoardingForm = () => {
                   )}
                 </Field>
               )}
-            />
+            </form.Field>
 
-            <form.Field
-              name="username"
-              children={(field) => (
+            <form.Field name="username">
+              {(field) => (
                 <Field>
                   <FieldLabel
                     htmlFor={field.name}
@@ -103,7 +101,7 @@ const OnBoardingForm = () => {
                   ))}
                 </Field>
               )}
-            />
+            </form.Field>
           </FieldGroup>
         </CardContent>
 

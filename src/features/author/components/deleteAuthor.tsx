@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useDeleteAuthor } from "../authorHook";
-import { AuthorSchema } from "../authorSchema";
 
 interface DeleteAuthorProps {
   author: {
@@ -37,9 +36,9 @@ const DeleteAuthor = ({ author }: DeleteAuthorProps) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete "
-            {full_name}". Authors that still have documents attached can't
-            be deleted — reassign or delete those documents first.
+            This action cannot be undone. This will permanently delete &quot;
+            {full_name}&quot;. Authors that still have documents attached
+            can&apos;t be deleted — reassign or delete those documents first.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

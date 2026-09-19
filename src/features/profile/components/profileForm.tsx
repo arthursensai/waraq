@@ -47,7 +47,7 @@ const ProfileForm = () => {
     form.setFieldValue("username", profile?.username);
     form.setFieldValue("id", profile?.id);
     form.setFieldValue("image_id", profile?.image_id ?? null);
-  }, [profile]);
+  }, [profile, form]);
 
   if (isLoading)
     return (
@@ -71,9 +71,8 @@ const ProfileForm = () => {
         }}
       >
         <FieldGroup>
-          <form.Field
-            name="image_file"
-            children={(field) => (
+          <form.Field name="image_file">
+            {() => (
               <div className="w-full flex items-center justify-center">
                 <ImagePicker
                   value={profile?.image}
@@ -82,11 +81,10 @@ const ProfileForm = () => {
                 />
               </div>
             )}
-          />
+          </form.Field>
 
-          <form.Field
-            name="username"
-            children={(field) => (
+          <form.Field name="username">
+            {(field) => (
               <Field>
                 <FieldLabel htmlFor={field.name}>Username</FieldLabel>
 
@@ -102,7 +100,7 @@ const ProfileForm = () => {
                 ))}
               </Field>
             )}
-          />
+          </form.Field>
         </FieldGroup>
 
         <Button type="submit">Update profile</Button>

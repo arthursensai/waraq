@@ -1,7 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,8 +10,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useUpdatePassword } from "../authHook";
 import { LoginSchema } from "../authSchema";
@@ -58,9 +54,8 @@ const UpdatePasswordForm = () => {
             }}
           >
             <FieldGroup className="flex flex-col gap-6">
-              <form.Field
-                name="password"
-                children={(field) => {
+              <form.Field name="password">
+                {(field) => {
                   const isInvalid = !!field.state.meta.errors[0];
                   return (
                     <Field>
@@ -80,7 +75,7 @@ const UpdatePasswordForm = () => {
                     </Field>
                   );
                 }}
-              />
+              </form.Field>
 
               {error && <p className="text-destructive">{error.message}</p>}
               <Button type="submit" className="w-full" disabled={isPending}>

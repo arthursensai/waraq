@@ -1,6 +1,6 @@
 "use client";
 
-import { Book, Users } from "lucide-react";
+import { Book } from "lucide-react";
 import { Loader } from "@/components/ui/loader";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

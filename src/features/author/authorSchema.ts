@@ -6,7 +6,10 @@ const imageFileSchema = z
   .instanceof(File)
   .refine((f) => f.size <= MAX_FILE_SIZE, "Max file size is 5MB.")
   .refine(
-    (f) => ACCEPTED_IMAGE_TYPES.includes(f.type as any),
+    (f) =>
+      ACCEPTED_IMAGE_TYPES.includes(
+        f.type as (typeof ACCEPTED_IMAGE_TYPES)[number],
+      ),
     "Only JPEG, PNG, WebP, GIF and SVG files are accepted.",
   )
   .nullable();

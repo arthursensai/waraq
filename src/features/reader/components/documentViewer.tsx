@@ -19,12 +19,14 @@ const DocumentViewer = ({
 
   useScrollToPageOnLoad(activeDocumentId, initialPage);
 
-  const currentPage = useSaveCurrentPage({
+  useSaveCurrentPage({
     documentId: activeDocumentId,
     onSavePage,
   });
 
-  const currentScale = (zoom as any)?.currentZoomLevel ?? 1;
+  const currentScale =
+    (zoom as { currentZoomLevel?: number } | undefined)?.currentZoomLevel ??
+    1;
   const renderScale =
   currentScale *
   (typeof window !== "undefined" ? Math.min(window.devicePixelRatio, 2) : 1);
