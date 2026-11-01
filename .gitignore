@@ -45,3 +45,5 @@ yarn-error.log*
 next-env.d.ts
 
 count.js
+# Test artifacts and potentially sensitive data
+/data/
